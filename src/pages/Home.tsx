@@ -1,46 +1,52 @@
-import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import GlitchRain from '../components/GlitchRain'
+import { useListNav } from '../hooks/useListNav'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 
-function Tile({
-  to,
-  label,
-  onEnter,
-}: {
-  to: string
-  label: string
-  onEnter: () => void
-}) {
-  return (
-    <Link
-      to={to}
-      onMouseEnter={onEnter}
-      className="group relative border border-white/40 hover:border-[var(--accent)] transition-colors px-10 py-16 flex-1 flex items-center justify-center bg-black"
-    >
-      <span className="text-2xl tracking-widest uppercase group-hover:text-[var(--accent)] transition-colors">
-        {label}
-      </span>
-    </Link>
-  )
-}
+const TILES = [
+  { to: '/research', label: 'Research' },
+  { to: '/projects', label: 'Projects' },
+]
 
 export default function Home() {
-  const lastTile = useRef<string | null>(null)
-  const [trigger, setTrigger] = useState(0)
+  const navigate = useNavigate()
+  const isDesktop = useMediaQuery('(min-width: 768px)')
 
-  const enter = (tile: string) => {
-    if (lastTile.current && lastTile.current !== tile) {
-      setTrigger((t) => t + 1)
-    }
-    lastTile.current = tile
-  }
+  const { activeIdx, setRef, onItemHover, onItemLeave } = useListNav({
+    count: TILES.length,
+    columns: isDesktop ? TILES.length : 1,
+    focusKey: 'home',
+    onActivate: (i) => navigate(TILES[i].to),
+    onPopUp: () => {},
+  })
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col">
       <div className="relative flex-1 flex flex-col md:flex-row gap-4 p-4">
-        <GlitchRain trigger={trigger} />
-        <Tile to="/research" label="Research" onEnter={() => enter('research')} />
-        <Tile to="/projects" label="Projects" onEnter={() => enter('projects')} />
+        <GlitchRain trigger={0} />
+        {TILES.map((t, i) => {
+          const active = activeIdx === i
+          return (
+            <Link
+              key={t.to}
+              to={t.to}
+              ref={setRef(i) as React.Ref<HTMLAnchorElement>}
+              onMouseEnter={() => onItemHover(i)}
+              onMouseLeave={onItemLeave}
+              className={`relative border transition-colors px-10 py-16 flex-1 flex items-center justify-center bg-black ${
+                active ? 'border-[var(--accent)]' : 'border-white/40'
+              }`}
+            >
+              <span
+                className={`text-2xl tracking-widest uppercase transition-colors ${
+                  active ? 'text-[var(--accent)]' : ''
+                }`}
+              >
+                {t.label}
+              </span>
+            </Link>
+          )
+        })}
       </div>
     </main>
   )

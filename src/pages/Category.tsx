@@ -1,21 +1,22 @@
-import { useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import GlitchRain from '../components/GlitchRain'
 import { CONTENT, type Kind as KindT } from '../data/content'
+import { useListNav } from '../hooks/useListNav'
 
 export default function Category() {
+  const navigate = useNavigate()
   const { kind, category } = useParams<{ kind: KindT; category: string }>()
-  const [trigger, setTrigger] = useState(0)
-  const last = useRef<string | null>(null)
-
-  const enter = (slug: string) => {
-    if (last.current && last.current !== slug) {
-      setTrigger((t) => t + 1)
-    }
-    last.current = slug
-  }
 
   const cat = kind && category ? CONTENT[kind]?.find((c) => c.slug === category) : undefined
+  const posts = cat?.posts ?? []
+
+  const { activeIdx, setRef, onItemHover, onItemLeave } = useListNav({
+    count: posts.length,
+    columns: 1,
+    focusKey: `cat:${kind}/${category}`,
+    onActivate: (i) => navigate(`/${kind}/${category}/${posts[i].slug}`),
+    onPopUp: () => navigate(`/${kind}`),
+  })
 
   if (!cat || !kind) {
     return (
@@ -30,7 +31,7 @@ export default function Category() {
 
   return (
     <main className="relative min-h-screen bg-black text-white flex flex-col">
-      <GlitchRain trigger={trigger} />
+      <GlitchRain trigger={0} />
       <header className="px-3 pt-2.5 pb-2 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black md:bg-transparent z-10 mobile-bottom-nav">
         <Link
           to={`/${kind}`}
@@ -41,23 +42,47 @@ export default function Category() {
         </Link>
         <span className="text-sm uppercase tracking-widest text-white/60">{cat.title}</span>
       </header>
-      <div className="relative flex-1 px-3 pt-4 md:pt-0 pb-14 md:pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
-        {cat.posts.map((p) => (
-          <Link
-            key={p.slug}
-            to={`/${kind}/${cat.slug}/${p.slug}`}
-            onMouseEnter={() => enter(p.slug)}
-            className="group relative border border-white/40 hover:border-[var(--accent)] transition-colors bg-black px-8 py-12 flex flex-col justify-between min-h-[180px]"
-          >
-            <span className="text-xl uppercase tracking-widest group-hover:text-[var(--accent)] transition-colors">
-              {p.title}
-            </span>
-            <span className="mt-8 text-xs text-white/50 tracking-widest uppercase">
-              updated {p.updated}
-            </span>
-          </Link>
-        ))}
-      </div>
+      <ul className="relative flex-1 px-3 md:px-4 pt-2 md:pt-2 pb-16 md:pb-3 mx-auto w-full max-w-3xl flex flex-col">
+        {posts.map((p, i) => {
+          const active = activeIdx === i
+          return (
+            <li key={p.slug}>
+              <Link
+                to={`/${kind}/${cat.slug}/${p.slug}`}
+                ref={setRef(i) as React.Ref<HTMLAnchorElement>}
+                onMouseEnter={() => onItemHover(i)}
+                onMouseLeave={onItemLeave}
+                className={`flex items-baseline gap-3 py-2.5 scroll-my-20 md:scroll-my-4 transition-colors ${
+                  active ? 'text-[var(--accent)]' : 'text-white/75'
+                }`}
+              >
+                <span
+                  aria-hidden
+                  className="w-4 shrink-0 text-[var(--accent)] select-none"
+                >
+                  {active ? '>' : ''}
+                </span>
+                <span className="uppercase tracking-widest text-sm">{p.title}</span>
+                <span
+                  aria-hidden
+                  className={`flex-1 overflow-hidden whitespace-nowrap select-none transition-colors ${
+                    active ? 'text-[var(--accent)]/60' : 'text-white/15'
+                  }`}
+                >
+                  {'·'.repeat(400)}
+                </span>
+                <span
+                  className={`text-xs tracking-widest uppercase shrink-0 transition-colors ${
+                    active ? 'text-[var(--accent)]' : 'text-white/45'
+                  }`}
+                >
+                  {p.updated}
+                </span>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
     </main>
   )
 }
