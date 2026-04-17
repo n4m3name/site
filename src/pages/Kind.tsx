@@ -19,7 +19,7 @@ export default function Kind({ kind }: { kind: KindT }) {
   return (
     <main className="relative min-h-screen bg-black text-white flex flex-col">
       <GlitchRain trigger={trigger} />
-      <header className="relative p-2.5 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10">
+      <header className="relative px-3 pt-2.5 pb-2 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10">
         <Link
           to="/"
           aria-label="home"

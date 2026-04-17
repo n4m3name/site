@@ -25,8 +25,8 @@ export default function GlitchBurst({ trigger }: { trigger: number }) {
     if (!ctx) return
 
     const root = document.documentElement
-    const bodyEl = document.body
-    const bodyAnim = bodyEl.animate(
+    const contentEl = document.getElementById('page-content')
+    const contentAnim = contentEl?.animate(
       [
         { transform: 'translate(0,0)', filter: 'none' },
         { transform: 'translate(-4px,3px) skewX(-2deg)', filter: 'hue-rotate(80deg) contrast(1.2)' },
@@ -162,7 +162,7 @@ export default function GlitchBurst({ trigger }: { trigger: number }) {
       cancelled = true
       cancelAnimationFrame(raf)
       ctx.clearRect(0, 0, w, h)
-      bodyAnim.cancel()
+      contentAnim?.cancel()
     }
   }, [trigger])
 

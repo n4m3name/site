@@ -24,18 +24,20 @@ export default function GlitchRain({
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const rect = canvas.getBoundingClientRect()
+    // Use window dimensions since canvas is fixed
+    const width = window.innerWidth
+    const height = window.innerHeight
     const dpr = window.devicePixelRatio || 1
-    canvas.width = rect.width * dpr
-    canvas.height = rect.height * dpr
+    canvas.width = width * dpr
+    canvas.height = height * dpr
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
     const charset = CHARSETS[Math.floor(Math.random() * CHARSETS.length)]
     const fontSize = 12 + Math.floor(Math.random() * 6)
-    const cols = Math.max(1, Math.floor(rect.width / fontSize))
-    const rows = Math.max(1, Math.floor(rect.height / fontSize))
+    const cols = Math.max(1, Math.floor(width / fontSize))
+    const rows = Math.max(1, Math.floor(height / fontSize))
     const density = 0.08 + Math.random() * 0.15
-    const glyphCount = Math.floor(cols * rows * density)
+    const glyphCount = Math.max(1, Math.floor(cols * rows * density))
 
     ctx.font = `${fontSize}px ui-monospace, "JetBrains Mono", monospace`
     ctx.textBaseline = 'top'
@@ -64,13 +66,14 @@ export default function GlitchRain({
       const elapsed = now - start
       const t = elapsed / duration
       if (t >= 1) {
-        ctx.clearRect(0, 0, rect.width, rect.height)
+        ctx.clearRect(0, 0, width, height)
         return
       }
 
       const idx = Math.min(frameCount - 1, Math.floor(t * frameCount))
       const frame = frames[idx]
-      ctx.clearRect(0, 0, rect.width, rect.height)
+      if (!frame) return
+      ctx.clearRect(0, 0, width, height)
       const envelope = t < 0.6 ? 1 : 1 - (t - 0.6) / 0.4
       for (const g of frame) {
         ctx.globalAlpha = envelope * g.a
@@ -84,7 +87,7 @@ export default function GlitchRain({
     return () => {
       cancelled = true
       cancelAnimationFrame(raf)
-      ctx.clearRect(0, 0, rect.width, rect.height)
+      ctx.clearRect(0, 0, width, height)
     }
   }, [trigger])
 
@@ -94,7 +97,7 @@ export default function GlitchRain({
       className={
         fullscreen
           ? 'fixed inset-0 w-screen h-screen pointer-events-none z-50'
-          : 'absolute inset-0 w-full h-full pointer-events-none'
+          : 'fixed inset-0 w-screen h-screen pointer-events-none'
       }
     />
   )

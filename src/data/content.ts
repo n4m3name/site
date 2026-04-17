@@ -5,8 +5,8 @@ export type Kind = 'research' | 'projects' | 'audio'
 export const CONTENT: Record<Kind, Category[]> = {
   research: [
     {
-      slug: 'neuroscience',
-      title: 'Neuroscience',
+      slug: 'statistics',
+      title: 'Statistics',
       updated: '2026-04-10',
       posts: [
         { slug: 'placeholder-one', title: 'Placeholder One', updated: '2026-04-10' },
@@ -49,8 +49,8 @@ export const CONTENT: Record<Kind, Category[]> = {
       ],
     },
     {
-      slug: 'mixes',
-      title: 'Mixes',
+      slug: 'rotation',
+      title: 'Rotation',
       updated: '2026-03-15',
       posts: [
         { slug: 'placeholder-mix', title: 'Placeholder Mix', updated: '2026-03-15' },
