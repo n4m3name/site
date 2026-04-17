@@ -24,7 +24,7 @@ export default function Post() {
         </Link>
         <span className="text-sm uppercase tracking-widest text-white/60">{kind}</span>
       </header>
-      <article className="relative bg-black px-4 pb-16 pt-4 mt-4 md:mt-0 max-w-3xl">
+      <article className="relative bg-black px-4 pb-16 pt-4 m-4 max-w-3xl">
         <h1 className="text-3xl uppercase tracking-widest">{post?.title ?? slug}</h1>
         {post && (
           <p className="mt-2 text-xs text-white/50 tracking-widest uppercase">
