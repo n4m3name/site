@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import GlitchBurst from './GlitchBurst'
 
 const ACCENTS = [
-  '#E60012', // original arch red (baseline luminance)
-  '#00731D', // matrix green (matched)
-  '#006565', // cyan (matched)
-  '#AC00AC', // magenta (matched)
-  '#505000', // yellow (matched)
-  '#853500', // safety orange (matched)
-  '#AC0E63', // hot pink (matched)
+  '#E60012', // red
+  '#00E510', // green
+  '#0066FF', // blue
+  '#FF6600', // orange
+  '#FFFF00', // yellow
+  '#FF00FF', // magenta
+  '#00FFFF', // cyan
 ]
 
 const STORAGE = { accent: 'fx.accent', light: 'fx.light' }

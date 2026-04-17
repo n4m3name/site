@@ -19,7 +19,7 @@ export default function Kind({ kind }: { kind: KindT }) {
   return (
     <main className="relative min-h-screen bg-black text-white flex flex-col">
       <GlitchRain trigger={trigger} />
-      <header className="relative p-2.5 flex items-center justify-between">
+      <header className="relative p-2.5 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10">
         <Link
           to="/"
           aria-label="home"
@@ -29,7 +29,7 @@ export default function Kind({ kind }: { kind: KindT }) {
         </Link>
         <span className="text-sm uppercase tracking-widest text-white/60">{kind}</span>
       </header>
-      <div className="relative flex-1 px-3 pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
+      <div className="relative flex-1 px-3 pb-14 md:pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
         {categories.map((c) => (
           <Link
             key={c.slug}

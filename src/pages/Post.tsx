@@ -14,7 +14,7 @@ export default function Post() {
   return (
     <main className="relative min-h-screen bg-black text-white">
       <GlitchRain trigger={trigger} />
-      <header className="relative p-2.5 flex items-center justify-between">
+      <header className="relative p-2.5 flex items-center justify-between fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10">
         <Link
           to={`/${kind}/${category}`}
           aria-label={category}
@@ -24,7 +24,7 @@ export default function Post() {
         </Link>
         <span className="text-sm uppercase tracking-widest text-white/60">{kind}</span>
       </header>
-      <article className="relative bg-black px-8 pb-16 pt-4 max-w-3xl">
+      <article className="relative bg-black px-8 pb-16 md:pb-16 pt-4 md:pt-4 max-w-3xl">
         <h1 className="text-3xl uppercase tracking-widest">{post?.title ?? slug}</h1>
         {post && (
           <p className="mt-2 text-xs text-white/50 tracking-widest uppercase">
