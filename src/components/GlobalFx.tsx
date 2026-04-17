@@ -19,9 +19,9 @@ const COMMANDS = [
   ['q', 'go home'],
   ['t', 'terminal'],
   ['c', 'cycle accent color'],
-  ['g', 'glitch burst'],
   ['a', 'about me'],
   ['m', 'music'],
+  ['g', 'glitch burst'],
 ]
 
 export default function GlobalFx() {
@@ -80,9 +80,11 @@ export default function GlobalFx() {
       {showMap && (
         <div
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm overflow-auto p-8"
-          onClick={() => setShowMap(false)}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowMap(false)
+          }}
         >
-          <div className="font-mono text-sm" onClick={(e) => e.stopPropagation()}>
+          <div className="font-mono text-sm w-fit">
             <h2 className="text-[var(--accent)] uppercase tracking-widest mb-6">Commands</h2>
             <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 mb-10">
               {COMMANDS.map(([key, desc]) => (
