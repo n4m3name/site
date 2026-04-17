@@ -18,7 +18,7 @@ export default function AboutMe() {
         </Link>
         <span className="text-sm uppercase tracking-widest text-white/60">about</span>
       </header>
-      <article className="relative bg-black px-4 pb-16 pt-4 m-4 mx-auto w-full max-w-3xl">
+      <article className="relative bg-black px-3 sm:px-4 pb-16 pt-4 m-0 sm:m-4 mx-auto w-full max-w-3xl">
         <h1 className="text-3xl uppercase tracking-widest">About Me</h1>
         <p className="mt-8 text-white/70">About me content placeholder.</p>
       </article>
