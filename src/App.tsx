@@ -6,6 +6,7 @@ import Post from './pages/Post'
 import AboutMe from './pages/AboutMe'
 import Terminal from './pages/Terminal'
 import NotFound from './pages/NotFound'
+import Void from './pages/Void'
 import GlobalFx from './components/GlobalFx'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/audio" element={<Kind kind="audio" />} />
           <Route path="/about-me" element={<AboutMe />} />
           <Route path="/terminal" element={<Terminal />} />
+          <Route path="/void" element={<Void />} />
           <Route path="/:kind/:category" element={<Category />} />
           <Route path="/:kind/:category/:slug" element={<Post />} />
           <Route path="*" element={<NotFound />} />

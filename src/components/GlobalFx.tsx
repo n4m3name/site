@@ -16,8 +16,13 @@ const ACCENTS = [
 
 const STORAGE = { accent: 'fx.accent' }
 
+let globalFxSuspended = false
+export function setGlobalFxSuspended(v: boolean) {
+  globalFxSuspended = v
+}
+
 const COMMANDS = [
-  ['h', 'toggle this overlay'],
+  ['h', 'toggle help'],
   ['s', 'site map'],
   ['q', 'go home'],
   ['t', 'terminal'],
@@ -72,6 +77,7 @@ export default function GlobalFx() {
     }
 
     const onKey = (e: KeyboardEvent) => {
+      if (globalFxSuspended) return
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
       if (e.metaKey || e.ctrlKey || e.altKey) return
 
@@ -182,25 +188,20 @@ export default function GlobalFx() {
       {showAbout && (
         <div
           ref={aboutRef}
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm overflow-auto"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm overflow-auto p-8"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowAbout(false)
           }}
         >
-          <article className="relative px-3 sm:px-4 pt-8 pb-16 mx-auto w-full max-w-3xl">
-            <h1 className="text-3xl uppercase tracking-widest">
+          <div className="w-full max-w-3xl">
+            <h2 className="font-mono text-sm text-[var(--accent)] uppercase tracking-widest mb-6">
               {aboutFrontmatter?.title ?? 'About Me'}
-            </h1>
-            {aboutFrontmatter?.updated && (
-              <p className="mt-2 text-xs text-white/50 tracking-widest uppercase">
-                updated {aboutFrontmatter.updated}
-              </p>
-            )}
-            <div className="prose-mdx mt-8">
+            </h2>
+            <div className="prose-mdx font-mono text-sm">
               <AboutBody />
             </div>
-            <p className="mt-10 text-white/40 text-xs">press a or click outside to close</p>
-          </article>
+            <p className="mt-8 font-mono text-white/40 text-xs">press a or click outside to close</p>
+          </div>
         </div>
       )}
       {showTree && (

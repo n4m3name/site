@@ -59,8 +59,8 @@ function resolvePath(cwd: string[], path: string): string[] | null {
   return result
 }
 
-function getNode(path: string[]): FSNode | null {
-  let node: FSNode = FILESYSTEM
+function getNode(root: FSNode, path: string[]): FSNode | null {
+  let node: FSNode = root
   for (const part of path) {
     if (node.type !== 'dir' || !(part in node.children)) return null
     node = node.children[part]
@@ -108,6 +108,9 @@ export default function Terminal() {
   const [history, setHistory] = useState<Array<{ input: string; output: string[] }>>([])
   const [input, setInput] = useState('')
   const [cwd, setCwd] = useState(['home', 'guest'])
+  const [histIdx, setHistIdx] = useState(-1)
+  const fsRef = useRef<FSNode | null>(null)
+  if (!fsRef.current) fsRef.current = structuredClone(FILESYSTEM)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -138,6 +141,7 @@ export default function Terminal() {
           '  cd       - change directory',
           '  cat      - display file contents',
           '  tree     - show directory tree',
+          '  rm       - remove files or directories',
           '  clear    - clear terminal',
           '  whoami   - print current user',
           '  echo     - print arguments',
@@ -167,20 +171,25 @@ export default function Terminal() {
         return
 
       case 'ls': {
-        const targetPath = args[0] ? resolvePath(cwd, args[0]) : cwd
+        const flags = args.filter((a) => a.startsWith('-')).join('')
+        const showHidden = flags.includes('a')
+        const positional = args.find((a) => !a.startsWith('-'))
+        const targetPath = positional ? resolvePath(cwd, positional) : cwd
         if (!targetPath) {
-          output = [`ls: cannot access '${args[0]}': No such file or directory`]
+          output = [`ls: cannot access '${positional}': No such file or directory`]
           break
         }
-        const node = getNode(targetPath)
+        const node = getNode(fsRef.current!, targetPath)
         if (!node) {
-          output = [`ls: cannot access '${args[0]}': No such file or directory`]
+          output = [`ls: cannot access '${positional}': No such file or directory`]
         } else if (node.type === 'file') {
-          output = [args[0] || formatPath(targetPath)]
+          output = [positional || formatPath(targetPath)]
         } else {
           const entries = Object.entries(node.children)
+            .filter(([name]) => showHidden || !name.startsWith('.'))
             .sort(([a], [b]) => a.localeCompare(b))
             .map(([name, child]) => child.type === 'dir' ? name + '/' : name)
+          if (showHidden) entries.unshift('.', '..')
           output = entries.length ? [entries.join('  ')] : []
         }
         break
@@ -201,7 +210,7 @@ export default function Terminal() {
           return
         }
         
-        const node = getNode(newPath)
+        const node = getNode(fsRef.current!, newPath)
         if (!node) {
           output = [`cd: ${target}: No such file or directory`]
         } else if (node.type === 'file') {
@@ -222,7 +231,7 @@ export default function Terminal() {
           output = [`cat: ${args[0]}: No such file or directory`]
           break
         }
-        const node = getNode(targetPath)
+        const node = getNode(fsRef.current!, targetPath)
         if (!node) {
           output = [`cat: ${args[0]}: No such file or directory`]
         } else if (node.type === 'dir') {
@@ -244,7 +253,7 @@ export default function Terminal() {
           output = generateSiteTree()
           break
         }
-        const node = getNode(targetPath)
+        const node = getNode(fsRef.current!, targetPath)
         if (!node) {
           output = [`tree: '${args[0]}': No such file or directory`]
         } else if (node.type === 'file') {
@@ -252,6 +261,52 @@ export default function Terminal() {
         } else {
           output = ['.', ...tree(node, targetPath)]
         }
+        break
+      }
+
+      case 'rm': {
+        const flags = args.filter((a) => a.startsWith('-')).join('')
+        const targets = args.filter((a) => !a.startsWith('-'))
+        const recursive = flags.includes('r') || flags.includes('R')
+        const force = flags.includes('f')
+        if (targets.length === 0) {
+          output = force ? [] : ['rm: missing operand']
+          break
+        }
+        const lines: string[] = []
+        for (const t of targets) {
+          const resolved = resolvePath(cwd, t)
+          if (!resolved) {
+            if (!force) lines.push(`rm: cannot remove '${t}': No such file or directory`)
+            continue
+          }
+          if (resolved.join('/') === 'home/guest/site') {
+            if (recursive) {
+              navigate('/void')
+              return
+            }
+            lines.push(`rm: cannot remove '${t}': Is a directory`)
+            continue
+          }
+          if (resolved.length === 0) {
+            lines.push(`rm: it is dangerous to operate recursively on '/'`)
+            continue
+          }
+          const parentPath = resolved.slice(0, -1)
+          const name = resolved[resolved.length - 1]
+          const parent = getNode(fsRef.current!, parentPath)
+          if (!parent || parent.type !== 'dir' || !(name in parent.children)) {
+            if (!force) lines.push(`rm: cannot remove '${t}': No such file or directory`)
+            continue
+          }
+          const target = parent.children[name]
+          if (target.type === 'dir' && !recursive) {
+            lines.push(`rm: cannot remove '${t}': Is a directory`)
+            continue
+          }
+          delete parent.children[name]
+        }
+        output = lines
         break
       }
 
@@ -267,6 +322,25 @@ export default function Terminal() {
     e.stopPropagation() // Prevent GlobalFx from capturing keys
     if (e.key === 'Enter') {
       execute(input)
+      setHistIdx(-1)
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      const cmds = history.map((h) => h.input).filter(Boolean)
+      if (cmds.length === 0) return
+      const next = Math.min(cmds.length - 1, histIdx + 1)
+      setHistIdx(next)
+      setInput(cmds[cmds.length - 1 - next])
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      const cmds = history.map((h) => h.input).filter(Boolean)
+      const next = histIdx - 1
+      if (next < 0) {
+        setHistIdx(-1)
+        setInput('')
+      } else {
+        setHistIdx(next)
+        setInput(cmds[cmds.length - 1 - next])
+      }
     }
   }
 

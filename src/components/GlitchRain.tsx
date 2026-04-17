@@ -96,7 +96,7 @@ export default function GlitchRain({
       ref={canvasRef}
       className={
         fullscreen
-          ? 'fixed inset-0 w-screen h-screen pointer-events-none z-50'
+          ? 'fixed inset-0 w-screen h-screen pointer-events-none z-[60]'
           : 'fixed inset-0 w-screen h-screen pointer-events-none'
       }
     />
