@@ -8,7 +8,7 @@ export default function AboutMe() {
   return (
     <main className="relative min-h-screen text-white flex flex-col">
       <GlitchRain trigger={trigger} />
-      <header className="p-2.5 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10">
+      <header className="p-2.5 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10 mobile-bottom-nav">
         <Link
           to="/"
           aria-label="home"

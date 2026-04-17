@@ -308,10 +308,10 @@ export default function Terminal() {
 
   return (
     <div 
-      className="min-h-screen bg-black text-white text-sm p-4 cursor-text"
+      className="min-h-screen bg-black text-white text-xs md:text-sm p-4 cursor-text"
       onClick={() => inputRef.current?.focus()}
     >
-      <div ref={containerRef} className="max-w-4xl mx-auto px-3 overflow-auto max-h-[calc(100vh-2rem)]">
+      <div ref={containerRef} className="max-w-4xl mx-auto px-1 md:px-3 overflow-auto max-h-[calc(100vh-2rem)]">
         {history.map((entry, i) => (
           <div key={i}>
             {entry.input && (
@@ -325,15 +325,15 @@ export default function Terminal() {
             ))}
           </div>
         ))}
-        <div>
-          <span className="text-[var(--accent)]">{prompt}</span>
+        <div className="flex whitespace-nowrap">
+          <span className="text-[var(--accent)] shrink-0">{prompt}</span>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="bg-transparent outline-none border-none text-white w-[60%]"
+            className="bg-transparent outline-none border-none text-white flex-1 min-w-0"
             style={{ 
               caretColor: 'var(--accent)',
               padding: 0,
