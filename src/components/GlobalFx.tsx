@@ -43,6 +43,10 @@ export default function GlobalFx() {
         localStorage.setItem(STORAGE.light, root.classList.contains('light') ? '1' : '0')
       } else if (e.key === 'g') {
         setTrigger((t) => t + 1)
+      } else if (e.key === 'a') {
+        window.location.href = '/about-me'
+      } else if (e.key === 'm') {
+        window.location.href = '/audio'
       }
     }
 

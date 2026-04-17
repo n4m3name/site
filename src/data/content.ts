@@ -1,6 +1,6 @@
 export type Post = { slug: string; title: string; updated: string }
 export type Category = { slug: string; title: string; updated: string; posts: Post[] }
-export type Kind = 'research' | 'projects'
+export type Kind = 'research' | 'projects' | 'audio'
 
 export const CONTENT: Record<Kind, Category[]> = {
   research: [
@@ -36,6 +36,24 @@ export const CONTENT: Record<Kind, Category[]> = {
       updated: '2026-02-02',
       posts: [
         { slug: 'placeholder-audio', title: 'Placeholder Audio', updated: '2026-02-02' },
+      ],
+    },
+  ],
+  audio: [
+    {
+      slug: 'releases',
+      title: 'Releases',
+      updated: '2026-04-01',
+      posts: [
+        { slug: 'placeholder-release', title: 'Placeholder Release', updated: '2026-04-01' },
+      ],
+    },
+    {
+      slug: 'mixes',
+      title: 'Mixes',
+      updated: '2026-03-15',
+      posts: [
+        { slug: 'placeholder-mix', title: 'Placeholder Mix', updated: '2026-03-15' },
       ],
     },
   ],

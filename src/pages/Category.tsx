@@ -41,7 +41,7 @@ export default function Category() {
         </Link>
         <span className="text-sm uppercase tracking-widest text-white/60">{cat.title}</span>
       </header>
-      <div className="relative flex-1 px-3 pb-14 md:pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
+      <div className="relative flex-1 px-3 pt-4 md:pt-0 pb-14 md:pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
         {cat.posts.map((p) => (
           <Link
             key={p.slug}
