@@ -301,6 +301,18 @@ export default function Terminal() {
     }
   }
 
+  // Prevent mobile scroll-into-view on input focus
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (window.innerWidth < 768) {
+      e.preventDefault()
+      // Refocus after a tick to keep keyboard up but not scroll
+      setTimeout(() => {
+        inputRef.current?.blur()
+        inputRef.current?.focus({ preventScroll: true })
+      }, 0)
+    }
+  }
+
   const displayPath = cwd.length >= 2 && cwd[0] === 'home' && cwd[1] === 'guest'
     ? (cwd.length === 2 ? '~' : '~/' + cwd.slice(2).join('/'))
     : formatPath(cwd)
@@ -333,6 +345,7 @@ export default function Terminal() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onFocus={handleInputFocus}
             className="bg-transparent outline-none border-none text-white flex-1 min-w-0"
             style={{ 
               caretColor: 'var(--accent)',
