@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import GlitchBurst from './GlitchBurst'
-import { CONTENT } from '../data/content'
-import type { Kind } from '../data/content'
+import { generateSiteTree } from '../data/content'
 
 const ACCENTS = [
   '#E60012', // red
@@ -15,39 +14,10 @@ const ACCENTS = [
 
 const STORAGE = { accent: 'fx.accent' }
 
-function generateSiteTree(): string {
-  const lines: string[] = ['.']
-  const kinds = Object.keys(CONTENT) as Kind[]
-  
-  kinds.forEach((kind, kindIdx) => {
-    const isLastKind = kindIdx === kinds.length - 1
-    const kindPrefix = isLastKind ? '└── ' : '├── '
-    const childPrefix = isLastKind ? '    ' : '│   '
-    
-    lines.push(`${kindPrefix}${kind}/`)
-    
-    const categories = CONTENT[kind]
-    categories.forEach((cat, catIdx) => {
-      const isLastCat = catIdx === categories.length - 1
-      const catPrefix = isLastCat ? '└── ' : '├── '
-      const postPrefix = isLastCat ? '    ' : '│   '
-      
-      lines.push(`${childPrefix}${catPrefix}${cat.slug}/`)
-      
-      cat.posts.forEach((post, postIdx) => {
-        const isLastPost = postIdx === cat.posts.length - 1
-        const postLine = isLastPost ? '└── ' : '├── '
-        lines.push(`${childPrefix}${postPrefix}${postLine}${post.slug}`)
-      })
-    })
-  })
-  
-  return lines.join('\n')
-}
-
 const COMMANDS = [
   ['h', 'toggle this overlay'],
   ['q', 'go home'],
+  ['t', 'terminal'],
   ['c', 'cycle accent color'],
   ['g', 'glitch burst'],
   ['a', 'about me'],
@@ -123,7 +93,7 @@ export default function GlobalFx() {
               ))}
             </div>
             <h2 className="text-[var(--accent)] uppercase tracking-widest mb-4">Site Map</h2>
-            <pre className="text-white/70 leading-relaxed">{generateSiteTree()}</pre>
+            <pre className="text-white/70 leading-relaxed">{generateSiteTree().join('\n')}</pre>
             <p className="mt-8 text-white/40 text-xs">press h or click outside to close</p>
           </div>
         </div>

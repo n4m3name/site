@@ -20,8 +20,8 @@ export default function Category() {
   if (!cat || !kind) {
     return (
       <main className="min-h-screen bg-black text-white p-8">
-        <Link to="/" className="text-sm text-white/60 hover:text-[var(--accent)]">
-          ← home
+        <Link to="/" aria-label="home" className="text-sm text-white/60 hover:text-[var(--accent)]">
+          &lt;
         </Link>
         <p className="mt-8 text-white/60">Not found.</p>
       </main>
@@ -31,7 +31,7 @@ export default function Category() {
   return (
     <main className="relative min-h-screen bg-black text-white flex flex-col">
       <GlitchRain trigger={trigger} />
-      <header className="relative px-3 pt-2.5 pb-2 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10 mobile-bottom-nav">
+      <header className="px-3 pt-2.5 pb-2 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10 mobile-bottom-nav">
         <Link
           to={`/${kind}`}
           aria-label={kind}

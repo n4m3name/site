@@ -1,0 +1,40 @@
+---
+title: This Site
+updated: 2026-04-15
+---
+
+This portfolio site is built with React, TypeScript, Vite, and Tailwind CSS. It features a minimal black aesthetic with customizable accent colors, glitch effects, and responsive design that adapts between desktop and mobile layouts.
+
+## Technical Stack
+
+The frontend is powered by React 19 with TypeScript for type safety. Vite provides lightning-fast HMR during development and optimized production builds. Tailwind CSS handles all styling with custom CSS variables for theming.
+
+## Glitch Effects
+
+Two distinct glitch effects add visual interest: GlitchRain renders randomized characters in the current accent color across the viewport, while GlitchBurst creates a more intense full-screen distortion including CSS filter animations, skew transforms, and rapid color cycling.
+
+The effects are triggered by user interactions—hovering between navigation tiles fires the rain effect, while pressing 'g' triggers the burst. This creates an experience where the site feels alive and reactive without being overwhelming during normal browsing.
+
+## Color System
+
+Six accent colors are available, cycling through with the 'c' key: the original arch red (#E60012), matrix green, blue, orange, yellow, and magenta. Each color is stored in localStorage so your preference persists across sessions.
+
+The colors were carefully chosen to be pure saturated hues that stand out against the black background while remaining readable.
+
+## Responsive Navigation
+
+On desktop, the navigation bar sits at the top of each page with a back arrow and section label. On mobile devices (below 768px), the navigation moves to the bottom of the screen as a fixed bar with a blurred background, making it easier to reach with one hand.
+
+Content areas automatically adjust their padding to account for the navigation position, ensuring nothing gets hidden behind the fixed mobile nav bar.
+
+## Secret Sections
+
+Not everything is visible from the main navigation. Press 'a' anywhere to access an about page, 'm' to reveal a hidden music section, or 't' to drop into a fake terminal. These Easter eggs reward curious visitors who explore beyond the obvious interface.
+
+## Deployment
+
+The site is deployed on Netlify with automatic builds triggered by pushes to the main branch. A `_redirects` file ensures client-side routing works correctly for all paths. The build process is straightforward: `pnpm install`, `pnpm build`, and serve the `dist` folder.
+
+## Content pipeline
+
+Posts are authored as MDX files under `content/`. The folder tree mirrors the URL tree: `content/<kind>/<category>/<slug>.mdx`. Frontmatter carries the title and updated date; the file tree drives the site's navigation automatically. MDX means posts can embed interactive React components alongside prose, and syntax highlighting is handled at build time by shiki. Math renders via KaTeX.

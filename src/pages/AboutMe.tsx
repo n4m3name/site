@@ -1,13 +1,11 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import GlitchRain from '../components/GlitchRain'
+import AboutBody, { frontmatter } from '../../content/about-me.mdx'
 
 export default function AboutMe() {
-  const [trigger] = useState(0)
-
   return (
     <main className="relative min-h-screen text-white flex flex-col">
-      <GlitchRain trigger={trigger} />
+      <GlitchRain trigger={0} />
       <header className="p-2.5 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none z-10 mobile-bottom-nav">
         <Link
           to="/"
@@ -19,8 +17,15 @@ export default function AboutMe() {
         <span className="text-sm uppercase tracking-widest text-white/60">about</span>
       </header>
       <article className="relative bg-black px-3 sm:px-4 pb-16 pt-4 mx-auto w-full max-w-3xl">
-        <h1 className="text-3xl uppercase tracking-widest">About Me</h1>
-        <p className="mt-8 text-white/70">About me content placeholder.</p>
+        <h1 className="text-3xl uppercase tracking-widest">{frontmatter?.title ?? 'About Me'}</h1>
+        {frontmatter?.updated && (
+          <p className="mt-2 text-xs text-white/50 tracking-widest uppercase">
+            updated {frontmatter.updated}
+          </p>
+        )}
+        <div className="prose-mdx mt-8">
+          <AboutBody />
+        </div>
       </article>
     </main>
   )

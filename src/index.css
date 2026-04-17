@@ -32,18 +32,41 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-@keyframes glitch-shake {
-  0%   { transform: translate(0, 0); filter: none; }
-  8%   { transform: translate(-4px, 3px) skewX(-2deg); filter: hue-rotate(80deg) contrast(1.2); }
-  16%  { transform: translate(5px, -2px); filter: hue-rotate(200deg) invert(0.15); }
-  24%  { transform: translate(-3px, 1px) skewX(3deg); filter: saturate(2) hue-rotate(45deg); }
-  32%  { transform: translate(2px, -3px); filter: invert(0.4); }
-  40%  { transform: translate(-6px, 2px); filter: hue-rotate(300deg) contrast(1.5); }
-  50%  { transform: translate(3px, 4px) skewY(-1deg); filter: invert(1); }
-  58%  { transform: translate(-1px, -2px); filter: hue-rotate(150deg); }
-  68%  { transform: translate(4px, 1px); filter: saturate(3); }
-  78%  { transform: translate(-2px, -1px); filter: hue-rotate(60deg); }
-  90%  { transform: translate(1px, 0); filter: none; }
-  100% { transform: translate(0, 0); filter: none; }
+/* MDX body styling */
+.prose-mdx { color: rgb(255 255 255 / 0.7); line-height: 1.65; }
+.prose-mdx > * + * { margin-top: 1.25rem; }
+.prose-mdx h2 {
+  color: #fff; font-size: 1.25rem; text-transform: uppercase;
+  letter-spacing: 0.2em; margin-top: 3rem;
 }
-html.glitching body { animation: glitch-shake 500ms steps(1) 1; }
+.prose-mdx h3 {
+  color: #fff; font-size: 1rem; text-transform: uppercase;
+  letter-spacing: 0.15em; margin-top: 2rem;
+}
+.prose-mdx a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.prose-mdx strong { color: #fff; font-weight: 600; }
+.prose-mdx ul, .prose-mdx ol { padding-left: 1.5rem; }
+.prose-mdx ul { list-style: square; }
+.prose-mdx ol { list-style: decimal; }
+.prose-mdx li + li { margin-top: 0.35rem; }
+.prose-mdx blockquote {
+  border-left: 2px solid var(--accent); padding-left: 1rem;
+  color: rgb(255 255 255 / 0.55);
+}
+.prose-mdx hr { border: 0; border-top: 1px solid rgb(255 255 255 / 0.15); margin: 2.5rem 0; }
+.prose-mdx :not(pre) > code {
+  background: rgb(255 255 255 / 0.08); padding: 0.1em 0.35em;
+  font-size: 0.9em; border-radius: 2px;
+}
+.prose-mdx pre {
+  overflow-x: auto; padding: 1rem; font-size: 0.85rem;
+  border: 1px solid rgb(255 255 255 / 0.15);
+}
+.prose-mdx pre code { background: transparent; padding: 0; font-size: inherit; }
+.prose-mdx img { max-width: 100%; height: auto; }
+.prose-mdx table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+.prose-mdx th, .prose-mdx td {
+  border: 1px solid rgb(255 255 255 / 0.2); padding: 0.4rem 0.6rem; text-align: left;
+}
+.prose-mdx .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.5rem 0; }
+

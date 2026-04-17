@@ -1,37 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CONTENT } from '../data/content'
-import type { Kind } from '../data/content'
-
-function generateSiteTree(): string[] {
-  const lines: string[] = ['.']
-  const kinds = Object.keys(CONTENT) as Kind[]
-  
-  kinds.forEach((kind, kindIdx) => {
-    const isLastKind = kindIdx === kinds.length - 1
-    const kindPrefix = isLastKind ? '└── ' : '├── '
-    const childPrefix = isLastKind ? '    ' : '│   '
-    
-    lines.push(`${kindPrefix}${kind}/`)
-    
-    const categories = CONTENT[kind]
-    categories.forEach((cat, catIdx) => {
-      const isLastCat = catIdx === categories.length - 1
-      const catPrefix = isLastCat ? '└── ' : '├── '
-      const postPrefix = isLastCat ? '    ' : '│   '
-      
-      lines.push(`${childPrefix}${catPrefix}${cat.slug}/`)
-      
-      cat.posts.forEach((post, postIdx) => {
-        const isLastPost = postIdx === cat.posts.length - 1
-        const postLine = isLastPost ? '└── ' : '├── '
-        lines.push(`${childPrefix}${postPrefix}${postLine}${post.slug}`)
-      })
-    })
-  })
-  
-  return lines
-}
+import { generateSiteTree } from '../data/content'
 
 type FSNode = { type: 'dir'; children: Record<string, FSNode> } | { type: 'file'; content: string }
 

@@ -5,11 +5,13 @@ import Category from './pages/Category'
 import Post from './pages/Post'
 import AboutMe from './pages/AboutMe'
 import Terminal from './pages/Terminal'
+import NotFound from './pages/NotFound'
 import GlobalFx from './components/GlobalFx'
 
 function App() {
   return (
     <BrowserRouter>
+      {/* GlitchBurst distorts #page-content via Element.animate(); keep GlobalFx outside so its overlay doesn't get distorted too. */}
       <div id="page-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -17,9 +19,10 @@ function App() {
           <Route path="/projects" element={<Kind kind="projects" />} />
           <Route path="/audio" element={<Kind kind="audio" />} />
           <Route path="/about-me" element={<AboutMe />} />
+          <Route path="/terminal" element={<Terminal />} />
           <Route path="/:kind/:category" element={<Category />} />
           <Route path="/:kind/:category/:slug" element={<Post />} />
-          <Route path="/terminal" element={<Terminal />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <GlobalFx />
