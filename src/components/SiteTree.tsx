@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { CONTENT, type Kind } from '../data/content'
+import { wiggle } from '../utils/wiggle'
 
 type Node = {
   key: string
@@ -178,7 +179,10 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
       if (!row) return
       if (k === 'ArrowRight') {
         if (row.reveal) return
-        if (row.isEmptyDir) return
+        if (row.isEmptyDir) {
+          wiggle(rowRefs.current.get(row.node.key))
+          return
+        }
         if (row.hasChildren) {
           if (!row.isOpen) toggle(row.node.key)
         } else {
@@ -189,8 +193,10 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
         if (row.hasChildren && row.isOpen) toggle(row.node.key)
       } else if (k === 'Enter') {
         if (row.reveal) revealAudio()
-        else if (row.isEmptyDir) return
-        else {
+        else if (row.isEmptyDir) {
+          wiggle(rowRefs.current.get(row.node.key))
+          return
+        } else {
           navigate(row.node.href)
           onClose()
         }
@@ -277,6 +283,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
             if (isEmptyDir) {
               e.preventDefault()
               selectRow(n.key)
+              wiggle(rowRefs.current.get(n.key))
             } else if (hasChildren) {
               e.preventDefault()
               selectRow(n.key)

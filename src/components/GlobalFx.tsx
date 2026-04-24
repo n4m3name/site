@@ -84,49 +84,66 @@ export default function GlobalFx() {
       if (e.metaKey || e.ctrlKey || e.altKey) return
 
       const { showMap: sm, showTree: st, showAbout: sa } = stateRef.current
-      if (sm || st || sa) {
-        const el = sm ? overlayRef.current : st ? treeRef.current : aboutRef.current
-        if (!el) return
-        const step = 40
-        // When the tree overlay is open, SiteTree owns arrow keys + Enter for cursor nav.
-        const inTree = st
-        if (e.key === 'ArrowDown' && !inTree) {
-          e.preventDefault()
-          e.stopImmediatePropagation()
-          el.scrollBy({ top: step })
-        } else if (e.key === 'ArrowUp' && !inTree) {
-          e.preventDefault()
-          e.stopImmediatePropagation()
-          el.scrollBy({ top: -step })
-        } else if (e.key === 'PageDown' || e.key === ' ') {
-          e.preventDefault()
-          el.scrollBy({ top: el.clientHeight * 0.9 })
-        } else if (e.key === 'PageUp') {
-          e.preventDefault()
-          el.scrollBy({ top: -el.clientHeight * 0.9 })
-        } else if (e.key === 'Home') {
-          e.preventDefault()
-          el.scrollTo({ top: 0 })
-        } else if (e.key === 'End') {
-          e.preventDefault()
-          el.scrollTo({ top: el.scrollHeight })
-        } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Enter') && !inTree) {
-          e.preventDefault()
-          e.stopImmediatePropagation()
-        } else if (e.key === 'Escape') {
-          setShowMap(false)
-          setShowTree(false)
-          setShowAbout(false)
-        } else if (e.key === 'h' && sm) {
-          setShowMap(false)
-        } else if (e.key === 's' && st) {
-          setShowTree(false)
-        } else if (e.key === 'a' && sa) {
-          setShowAbout(false)
-        }
-        return
+      const anyOpen = sm || st || sa
+      const closeAll = () => {
+        setShowMap(false)
+        setShowTree(false)
+        setShowAbout(false)
       }
 
+      // When an overlay is open, handle scroll/nav keys in overlay context.
+      // SiteTree owns arrow keys + Enter for cursor nav, so skip those when st.
+      if (anyOpen) {
+        const el = sm ? overlayRef.current : st ? treeRef.current : aboutRef.current
+        const inTree = st
+        const step = 40
+        if (e.key === 'Escape') {
+          closeAll()
+          return
+        }
+        if (el) {
+          if (e.key === 'ArrowDown' && !inTree) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            el.scrollBy({ top: step })
+            return
+          }
+          if (e.key === 'ArrowUp' && !inTree) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            el.scrollBy({ top: -step })
+            return
+          }
+          if (e.key === 'PageDown' || e.key === ' ') {
+            e.preventDefault()
+            el.scrollBy({ top: el.clientHeight * 0.9 })
+            return
+          }
+          if (e.key === 'PageUp') {
+            e.preventDefault()
+            el.scrollBy({ top: -el.clientHeight * 0.9 })
+            return
+          }
+          if (e.key === 'Home') {
+            e.preventDefault()
+            el.scrollTo({ top: 0 })
+            return
+          }
+          if (e.key === 'End') {
+            e.preventDefault()
+            el.scrollTo({ top: el.scrollHeight })
+            return
+          }
+          if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Enter') && !inTree) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            return
+          }
+        }
+      }
+
+      // Single-letter shortcuts — work regardless of overlay state.
+      // h/s/a are mutually exclusive: opening one closes the others.
       if (e.key === 'c') {
         accentIdx.current = (accentIdx.current + 1) % ACCENTS.length
         const next = ACCENTS[accentIdx.current]
@@ -134,17 +151,26 @@ export default function GlobalFx() {
         localStorage.setItem(STORAGE.accent, next)
       } else if (e.key === 'g') {
         setTrigger((t) => t + 1)
-      } else if (e.key === 'a') {
-        setShowAbout((v) => !v)
-      } else if (e.key === 'm') {
-        navRef.current('/audio')
       } else if (e.key === 'h') {
         setShowMap((v) => !v)
+        setShowTree(false)
+        setShowAbout(false)
       } else if (e.key === 's') {
         setShowTree((v) => !v)
+        setShowMap(false)
+        setShowAbout(false)
+      } else if (e.key === 'a') {
+        setShowAbout((v) => !v)
+        setShowMap(false)
+        setShowTree(false)
+      } else if (e.key === 'm') {
+        closeAll()
+        navRef.current('/audio')
       } else if (e.key === 'q') {
+        closeAll()
         navRef.current('/')
       } else if (e.key === 't') {
+        closeAll()
         navRef.current('/terminal')
       }
     }

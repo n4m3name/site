@@ -1,7 +1,9 @@
+import { useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { CONTENT, type Kind } from '../data/content'
 import { useListNav } from '../hooks/useListNav'
 import { useMediaQuery } from '../hooks/useMediaQuery'
+import { wiggle } from '../utils/wiggle'
 
 const TILES: { to: string; label: string; kind: Kind }[] = [
   { to: '/research', label: 'Research', kind: 'research' },
@@ -11,6 +13,7 @@ const TILES: { to: string; label: string; kind: Kind }[] = [
 export default function Home() {
   const navigate = useNavigate()
   const isDesktop = useMediaQuery('(min-width: 768px)')
+  const tileRefs = useRef<(HTMLAnchorElement | null)[]>([])
 
   const isEmpty = (kind: Kind) => CONTENT[kind].length === 0
 
@@ -19,7 +22,10 @@ export default function Home() {
     columns: isDesktop ? TILES.length : 1,
     focusKey: 'home',
     onActivate: (i) => {
-      if (isEmpty(TILES[i].kind)) return
+      if (isEmpty(TILES[i].kind)) {
+        wiggle(tileRefs.current[i])
+        return
+      }
       navigate(TILES[i].to)
     },
     onPopUp: () => {},
@@ -35,11 +41,17 @@ export default function Home() {
             <Link
               key={t.to}
               to={t.to}
-              ref={setRef(i) as React.Ref<HTMLAnchorElement>}
+              ref={(el) => {
+                ;(setRef(i) as (e: HTMLAnchorElement | null) => void)(el)
+                tileRefs.current[i] = el
+              }}
               onMouseEnter={() => onItemHover(i)}
               onMouseLeave={onItemLeave}
               onClick={(e) => {
-                if (empty) e.preventDefault()
+                if (empty) {
+                  e.preventDefault()
+                  wiggle(e.currentTarget)
+                }
               }}
               aria-disabled={empty || undefined}
               className={`relative border transition-colors px-10 py-16 flex-1 flex items-center justify-center bg-black ${
