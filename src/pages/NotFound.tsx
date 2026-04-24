@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom'
-import GlitchRain from '../components/GlitchRain'
 
 export default function NotFound() {
   return (
     <main className="relative min-h-screen text-white flex flex-col">
-      <GlitchRain trigger={0} />
       <header className="px-3 pt-2.5 pb-2 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black md:bg-transparent z-10 mobile-bottom-nav">
         <Link
           to="/"

@@ -15,6 +15,7 @@ type Flat = {
   branch: string
   hasChildren: boolean
   isOpen: boolean
+  isEmptyDir: boolean
   reveal?: boolean
 }
 
@@ -82,8 +83,9 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
         const branch = isLast ? '└── ' : '├── '
         const childPrefix = prefix + (isLast ? '    ' : '│   ')
         const hasChildren = !!n.children && n.children.length > 0
+        const isEmptyDir = !!n.children && n.children.length === 0
         const isOpen = open.has(n.key)
-        out.push({ node: n, prefix, branch, hasChildren, isOpen })
+        out.push({ node: n, prefix, branch, hasChildren, isOpen, isEmptyDir })
         if (hasChildren && isOpen) walk(n.children!, childPrefix, false)
       })
     }
@@ -95,6 +97,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
         branch: '└── ',
         hasChildren: false,
         isOpen: false,
+        isEmptyDir: false,
         reveal: true,
       })
     }
@@ -175,6 +178,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
       if (!row) return
       if (k === 'ArrowRight') {
         if (row.reveal) return
+        if (row.isEmptyDir) return
         if (row.hasChildren) {
           if (!row.isOpen) toggle(row.node.key)
         } else {
@@ -185,6 +189,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
         if (row.hasChildren && row.isOpen) toggle(row.node.key)
       } else if (k === 'Enter') {
         if (row.reveal) revealAudio()
+        else if (row.isEmptyDir) return
         else {
           navigate(row.node.href)
           onClose()
@@ -225,7 +230,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
   )
 
   flat.forEach((f) => {
-    const { node: n, prefix, branch, hasChildren, isOpen, reveal } = f
+    const { node: n, prefix, branch, hasChildren, isOpen, isEmptyDir, reveal } = f
     const active = activeKey === n.key
     if (reveal) {
       rows.push(
@@ -269,7 +274,10 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
         <Link
           to={n.href}
           onClick={(e) => {
-            if (hasChildren) {
+            if (isEmptyDir) {
+              e.preventDefault()
+              selectRow(n.key)
+            } else if (hasChildren) {
               e.preventDefault()
               selectRow(n.key)
               toggle(n.key)
@@ -277,11 +285,15 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
               onClose()
             }
           }}
-          className="cursor-pointer"
+          className={isEmptyDir ? 'cursor-default' : 'cursor-pointer'}
         >
           <span
             className={`transition-colors ${
-              active ? 'text-[var(--accent)]' : 'text-white/70'
+              active
+                ? 'text-[var(--accent)]'
+                : isEmptyDir
+                  ? 'text-white/30'
+                  : 'text-white/70'
             }`}
           >
             {n.label}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import GlitchBurst from './GlitchBurst'
+import GlitchRain from './GlitchRain'
 import SiteTree from './SiteTree'
 import { setListNavSuspended } from '../hooks/useListNav'
 import AboutBody, { frontmatter as aboutFrontmatter } from '../../content/about-me.mdx'
@@ -40,6 +41,7 @@ const NAV = [
 
 export default function GlobalFx() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [trigger, setTrigger] = useState(0)
   const [showMap, setShowMap] = useState(false)
   const [showTree, setShowTree] = useState(false)
@@ -153,6 +155,7 @@ export default function GlobalFx() {
 
   return (
     <>
+      <GlitchRain key={location.key} trigger={0} />
       <GlitchBurst trigger={trigger} />
       {showMap && (
         <div
@@ -194,7 +197,7 @@ export default function GlobalFx() {
           }}
         >
           <div className="w-full max-w-3xl">
-            <h2 className="font-mono text-sm text-[var(--accent)] uppercase tracking-widest mb-6">
+            <h2 className="text-3xl uppercase tracking-widest mb-8">
               {aboutFrontmatter?.title ?? 'About Me'}
             </h2>
             <div className="prose-mdx font-mono text-sm">
