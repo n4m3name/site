@@ -191,6 +191,7 @@ export default function GlobalFx() {
       {showMap && (
         <div
           ref={overlayRef}
+          data-glitchable
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm overflow-auto p-8"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowMap(false)
@@ -229,6 +230,7 @@ export default function GlobalFx() {
       {showAbout && (
         <div
           ref={aboutRef}
+          data-glitchable
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm overflow-auto p-8"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowAbout(false)
@@ -248,6 +250,7 @@ export default function GlobalFx() {
       {showTree && (
         <div
           ref={treeRef}
+          data-glitchable
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm overflow-auto p-8"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowTree(false)

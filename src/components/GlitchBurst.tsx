@@ -25,22 +25,29 @@ export default function GlitchBurst({ trigger }: { trigger: number }) {
     if (!ctx) return
 
     const root = document.documentElement
+    const targets: HTMLElement[] = []
     const contentEl = document.getElementById('page-content')
-    const contentAnim = contentEl?.animate(
-      [
-        { transform: 'translate(0,0)', filter: 'none' },
-        { transform: 'translate(-4px,3px) skewX(-2deg)', filter: 'hue-rotate(80deg) contrast(1.2)' },
-        { transform: 'translate(5px,-2px)', filter: 'hue-rotate(200deg) invert(0.15)' },
-        { transform: 'translate(-3px,1px) skewX(3deg)', filter: 'saturate(2) hue-rotate(45deg)' },
-        { transform: 'translate(2px,-3px)', filter: 'invert(0.4)' },
-        { transform: 'translate(-6px,2px)', filter: 'hue-rotate(300deg) contrast(1.5)' },
-        { transform: 'translate(3px,4px) skewY(-1deg)', filter: 'invert(1)' },
-        { transform: 'translate(-1px,-2px)', filter: 'hue-rotate(150deg)' },
-        { transform: 'translate(4px,1px)', filter: 'saturate(3)' },
-        { transform: 'translate(-2px,-1px)', filter: 'hue-rotate(60deg)' },
-        { transform: 'translate(0,0)', filter: 'none' },
-      ],
-      { duration: 500, easing: 'steps(1)', iterations: 1 },
+    if (contentEl) targets.push(contentEl)
+    document
+      .querySelectorAll<HTMLElement>('[data-glitchable]')
+      .forEach((el) => targets.push(el))
+    const targetAnims = targets.map((t) =>
+      t.animate(
+        [
+          { transform: 'translate(0,0)', filter: 'none' },
+          { transform: 'translate(-4px,3px) skewX(-2deg)', filter: 'hue-rotate(80deg) contrast(1.2)' },
+          { transform: 'translate(5px,-2px)', filter: 'hue-rotate(200deg) invert(0.15)' },
+          { transform: 'translate(-3px,1px) skewX(3deg)', filter: 'saturate(2) hue-rotate(45deg)' },
+          { transform: 'translate(2px,-3px)', filter: 'invert(0.4)' },
+          { transform: 'translate(-6px,2px)', filter: 'hue-rotate(300deg) contrast(1.5)' },
+          { transform: 'translate(3px,4px) skewY(-1deg)', filter: 'invert(1)' },
+          { transform: 'translate(-1px,-2px)', filter: 'hue-rotate(150deg)' },
+          { transform: 'translate(4px,1px)', filter: 'saturate(3)' },
+          { transform: 'translate(-2px,-1px)', filter: 'hue-rotate(60deg)' },
+          { transform: 'translate(0,0)', filter: 'none' },
+        ],
+        { duration: 500, easing: 'steps(1)', iterations: 1 },
+      ),
     )
 
     const dpr = window.devicePixelRatio || 1
@@ -162,14 +169,14 @@ export default function GlitchBurst({ trigger }: { trigger: number }) {
       cancelled = true
       cancelAnimationFrame(raf)
       ctx.clearRect(0, 0, w, h)
-      contentAnim?.cancel()
+      targetAnims.forEach((a) => a.cancel())
     }
   }, [trigger])
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-screen h-screen pointer-events-none z-50"
+      className="fixed inset-0 w-screen h-screen pointer-events-none z-[60]"
     />
   )
 }
