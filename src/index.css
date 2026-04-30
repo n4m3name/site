@@ -24,17 +24,6 @@ html, body, #root {
 
 a { color: inherit; text-decoration: none; }
 
-/* Mobile bottom nav - extends to cover dynamic viewport changes */
-@media (max-width: 767px) {
-  .mobile-bottom-nav {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    margin-bottom: 0;
-    /* Paint black below the nav to cover the strip exposed when mobile
-       browser chrome retracts on scroll. Shadows don't affect layout. */
-    box-shadow: 0 100vh 0 0 #000;
-  }
-}
-
 /* MDX body styling */
 .prose-mdx { color: rgb(255 255 255 / 0.7); line-height: 1.65; }
 .prose-mdx > * + * { margin-top: 1.25rem; }

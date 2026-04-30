@@ -16,12 +16,10 @@ function App() {
       <div id="page-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/research" element={<Kind kind="research" />} />
-          <Route path="/projects" element={<Kind kind="projects" />} />
-          <Route path="/audio" element={<Kind kind="audio" />} />
           <Route path="/about-me" element={<AboutMe />} />
           <Route path="/terminal" element={<Terminal />} />
           <Route path="/void" element={<Void />} />
+          <Route path="/:kind" element={<Kind />} />
           <Route path="/:kind/:category" element={<Category />} />
           <Route path="/:kind/:category/:slug" element={<Post />} />
           <Route path="*" element={<NotFound />} />

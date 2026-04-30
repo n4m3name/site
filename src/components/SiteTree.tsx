@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { CONTENT, type Kind } from '../data/content'
+import { CONTENT, HIDDEN_KINDS, KINDS, kindLabel, type Kind } from '../data/content'
 import { wiggle } from '../utils/wiggle'
 
 type Node = {
@@ -24,17 +24,10 @@ const REVEAL_KEY = '__reveal__'
 
 type Mode = 'none' | 'keyboard' | 'mouse'
 
-const KIND_LABEL: Record<Kind, string> = {
-  research: 'research',
-  projects: 'projects',
-  audio: 'music',
-}
-
 function buildTree(): Node[] {
-  const kinds = Object.keys(CONTENT) as Kind[]
-  return kinds.map((kind) => ({
+  return KINDS.map((kind) => ({
     key: kind,
-    label: `${KIND_LABEL[kind]}/`,
+    label: `${kindLabel(kind)}/`,
     href: `/${kind}`,
     children: CONTENT[kind].map((cat) => ({
       key: `${kind}/${cat.slug}`,
@@ -52,17 +45,20 @@ function buildTree(): Node[] {
 export default function SiteTree({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate()
   const [open, setOpen] = useState<Set<string>>(new Set())
-  const [audioRevealed, setAudioRevealed] = useState(false)
+  const [hiddenRevealed, setHiddenRevealed] = useState(false)
   const [kbCursor, setKbCursor] = useState<string | null>(null)
   const [hoverCursor, setHoverCursor] = useState<string | null>(null)
   const [mode, setMode] = useState<Mode>('none')
   const rowRefs = useRef<Map<string, HTMLDivElement | null>>(new Map())
   const mouseMoved = useRef(false)
 
-  const revealAudio = () => {
-    setAudioRevealed(true)
-    setKbCursor('audio')
-    setHoverCursor((prev) => (prev === null ? prev : 'audio'))
+  const revealHidden = () => {
+    setHiddenRevealed(true)
+    const firstHidden = KINDS.find((k) => HIDDEN_KINDS.has(k))
+    if (firstHidden) {
+      setKbCursor(firstHidden)
+      setHoverCursor((prev) => (prev === null ? prev : firstHidden))
+    }
   }
 
   const toggle = (key: string) => {
@@ -76,7 +72,9 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
 
   const flat = useMemo<Flat[]>(() => {
     const tree = buildTree()
-    const visibleTop = tree.filter((n) => n.key !== 'audio' || audioRevealed)
+    const visibleTop = tree.filter(
+      (n) => !HIDDEN_KINDS.has(n.key as Kind) || hiddenRevealed,
+    )
     const out: Flat[] = []
     const walk = (nodes: Node[], prefix: string, hideLast: boolean) => {
       nodes.forEach((n, i) => {
@@ -90,8 +88,8 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
         if (hasChildren && isOpen) walk(n.children!, childPrefix, false)
       })
     }
-    walk(visibleTop, '', !audioRevealed)
-    if (!audioRevealed) {
+    walk(visibleTop, '', !hiddenRevealed)
+    if (!hiddenRevealed) {
       out.push({
         node: { key: REVEAL_KEY, label: '...', href: '' },
         prefix: '',
@@ -103,7 +101,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
       })
     }
     return out
-  }, [open, audioRevealed])
+  }, [open, hiddenRevealed])
 
   // Keep cursor valid as the tree changes.
   useEffect(() => {
@@ -192,7 +190,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
       } else if (k === 'ArrowLeft') {
         if (row.hasChildren && row.isOpen) toggle(row.node.key)
       } else if (k === 'Enter') {
-        if (row.reveal) revealAudio()
+        if (row.reveal) revealHidden()
         else if (row.isEmptyDir) {
           wiggle(rowRefs.current.get(row.node.key))
           return
@@ -253,7 +251,7 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
           <span className="text-white/40">{prefix + branch}</span>
           <button
             type="button"
-            onClick={revealAudio}
+            onClick={revealHidden}
             className={`transition-colors cursor-pointer ${
               active ? 'text-[var(--accent)]' : 'text-white/25'
             }`}
@@ -282,8 +280,8 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
           onClick={(e) => {
             if (isEmptyDir) {
               e.preventDefault()
-              selectRow(n.key)
-              wiggle(rowRefs.current.get(n.key))
+              if (active) wiggle(rowRefs.current.get(n.key))
+              else selectRow(n.key)
             } else if (hasChildren) {
               e.preventDefault()
               selectRow(n.key)
@@ -296,10 +294,12 @@ export default function SiteTree({ onClose }: { onClose: () => void }) {
         >
           <span
             className={`transition-colors ${
-              active
-                ? 'text-[var(--accent)]'
-                : isEmptyDir
-                  ? 'text-white/30'
+              isEmptyDir
+                ? active
+                  ? 'text-white/55'
+                  : 'text-white/25'
+                : active
+                  ? 'text-[var(--accent)]'
                   : 'text-white/70'
             }`}
           >

@@ -1,25 +1,32 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { CONTENT, type Kind as KindT } from '../data/content'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { CONTENT, kindLabel } from '../data/content'
 import { useListNav } from '../hooks/useListNav'
 import { useMediaQuery } from '../hooks/useMediaQuery'
+import NotFound from './NotFound'
 
-export default function Kind({ kind }: { kind: KindT }) {
+export default function Kind() {
   const navigate = useNavigate()
   const isDesktop = useMediaQuery('(min-width: 768px)')
-
+  const { kind = '' } = useParams<{ kind: string }>()
   const categories = CONTENT[kind]
 
+  // useListNav must run unconditionally (hook order). Compute below uses safe
+  // fallback for missing kinds; the early-return after handles the 404 render.
+  const safeCategories = categories ?? []
+
   const { activeIdx, setRef, onItemHover, onItemLeave } = useListNav({
-    count: categories.length,
+    count: safeCategories.length,
     columns: isDesktop ? 2 : 1,
     focusKey: `kind:${kind}`,
-    onActivate: (i) => navigate(`/${kind}/${categories[i].slug}`),
+    onActivate: (i) => navigate(`/${kind}/${safeCategories[i].slug}`),
     onPopUp: () => navigate('/'),
   })
 
+  if (!categories) return <NotFound />
+
   return (
     <main className="relative min-h-screen bg-black text-white flex flex-col">
-      <header className="px-3 pt-2.5 pb-2 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black md:bg-transparent z-10 mobile-bottom-nav">
+      <header className="px-3 py-2.5 flex items-center justify-between bg-black">
         <Link
           to="/"
           aria-label="home"
@@ -27,10 +34,10 @@ export default function Kind({ kind }: { kind: KindT }) {
         >
           &lt;
         </Link>
-        <span className="text-sm uppercase tracking-widest text-white/60">{kind}</span>
+        <span className="text-sm uppercase tracking-widest text-white/60">{kindLabel(kind)}</span>
       </header>
-      <div className="relative flex-1 px-3 pt-4 md:pt-0 pb-14 md:pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
-        {categories.map((c, i) => {
+      <div className="relative flex-1 px-3 pt-0 pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
+        {safeCategories.map((c, i) => {
           const active = activeIdx === i
           return (
             <Link

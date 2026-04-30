@@ -142,5 +142,12 @@ export function useListNav({
     refs.current[i] = el
   }
 
-  return { activeIdx, setRef, onItemHover, onItemLeave }
+  // Programmatically mark item `i` as selected. Used by click handlers that
+  // need a "tap-to-select, tap-again-to-activate" flow on touch.
+  const select = (i: number) => {
+    setMode('keyboard')
+    setKbIdx(i)
+  }
+
+  return { activeIdx, setRef, onItemHover, onItemLeave, select }
 }

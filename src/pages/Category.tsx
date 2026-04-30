@@ -30,7 +30,7 @@ export default function Category() {
 
   return (
     <main className="relative min-h-screen bg-black text-white flex flex-col">
-      <header className="px-3 pt-2.5 pb-2 flex items-center justify-between order-last md:order-first fixed bottom-0 left-0 right-0 md:static bg-black md:bg-transparent z-10 mobile-bottom-nav">
+      <header className="px-3 py-2.5 flex items-center justify-between bg-black">
         <Link
           to={`/${kind}`}
           aria-label={kind}
@@ -40,7 +40,7 @@ export default function Category() {
         </Link>
         <span className="text-sm uppercase tracking-widest text-white/60">{cat.title}</span>
       </header>
-      <ul className="relative flex-1 px-3 md:px-4 pt-2 md:pt-2 pb-16 md:pb-3 mx-auto w-full max-w-3xl flex flex-col">
+      <ul className="relative flex-1 px-3 md:px-4 pt-2 pb-3 mx-auto w-full max-w-3xl flex flex-col">
         {posts.map((p, i) => {
           const active = activeIdx === i
           return (
@@ -50,7 +50,7 @@ export default function Category() {
                 ref={setRef(i) as React.Ref<HTMLAnchorElement>}
                 onMouseEnter={() => onItemHover(i)}
                 onMouseLeave={onItemLeave}
-                className={`flex items-baseline gap-3 py-2.5 scroll-my-20 md:scroll-my-4 transition-colors ${
+                className={`flex items-baseline gap-3 py-2.5 scroll-my-4 transition-colors ${
                   active ? 'text-[var(--accent)]' : 'text-white/75'
                 }`}
               >

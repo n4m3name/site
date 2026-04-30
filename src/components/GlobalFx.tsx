@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import GlitchBurst from './GlitchBurst'
 import GlitchRain from './GlitchRain'
 import SiteTree from './SiteTree'
+import { triggerShortcut } from './NavHints'
 import { setListNavSuspended } from '../hooks/useListNav'
 import AboutBody, { frontmatter as aboutFrontmatter } from '../../content/about-me.mdx'
 
@@ -30,6 +31,7 @@ const COMMANDS = [
   ['c', 'cycle accent color'],
   ['a', 'about me'],
   ['m', 'music'],
+  ['w', 'writing'],
   ['g', 'glitch burst'],
 ]
 
@@ -166,6 +168,9 @@ export default function GlobalFx() {
       } else if (e.key === 'm') {
         closeAll()
         navRef.current('/audio')
+      } else if (e.key === 'w') {
+        closeAll()
+        navRef.current('/writing')
       } else if (e.key === 'q') {
         closeAll()
         navRef.current('/')
@@ -196,7 +201,14 @@ export default function GlobalFx() {
             <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 mb-10">
               {COMMANDS.map(([key, desc]) => (
                 <div key={key} className="contents">
-                  <span className="text-[var(--accent)]">{key}</span>
+                  <button
+                    type="button"
+                    onClick={() => triggerShortcut(key)}
+                    aria-label={desc}
+                    className="text-[var(--accent)] hover:text-white transition-colors text-left leading-none -m-1 p-1 cursor-pointer"
+                  >
+                    {key}
+                  </button>
                   <span className="text-white/70">{desc}</span>
                 </div>
               ))}
