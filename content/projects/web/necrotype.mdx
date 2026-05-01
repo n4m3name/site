@@ -7,15 +7,7 @@ updated: 2026-04-30
   <img src="/images/necrotype-app.png"    alt="NecroType desktop view" width="600" />
 </p>
 
-A generative design tool for metal logos etc. Check it out [here](https://necrotype.netlify.app/)
-
-I've been developing an interest in automating creative processes: Many are directly algorithmic. I had a go at drawing a black/death metal style logo for my music project the other day and it was brutal (not in a good way). I guess after having been at a computer or thinking about math for years my brain automatically starts trying to find the most efficient way to get something done.
-
-The process of drawing these is iterative and random: You start with text, you do a pass randomly extending branches/arms out of this text in some style (within some parameter space, e.g. orientation and symmetry may vary within some bounds). Repeat passes until satisfied.
-
-I wrote this process out in quite a bit more detail, noting specific fields I thought would be important to have control over and told claude to get to work. I may be giving myself too much credit but I think the breakdown of the process into concrete steps is what made the result such a success - the code faithfully captures the exact style that I was unable to draw myself, and makes some pretty weird and fun artifacts when it fails.
-
-
+A generative design tool for metal logos. Live at [necrotype.netlify.app](https://necrotype.netlify.app/).
 
 ## Examples
 
@@ -44,7 +36,7 @@ The renderer bins segments by stroke width and chains adjacent segments into sin
 
 ## Notes
 
-- **"I'm feeling heavy"** randomizes within ranges chosen to produce visually-heavy results (high curl + symmetry + taper, mid stroke, low overlap, low branch). The image at the top of this post was generated this way: no slider tweaking, just press + re-roll the seed.
+- **"I'm feeling heavy"** randomizes within ranges biased toward dense output (high curl + symmetry + taper, mid stroke, low overlap, low branch).
 - **Time-budget anti-freeze**: at extreme parameter combos (high branch + low overlap + long tendrils) the pipeline can blow up in cost. A 700 ms full-render budget caps it; on overrun the pipeline bails with a partial result and the status bar flags it.
 - **Variable fonts work**: `Cinzel[wght].ttf`, `Oswald[wght].ttf`, `Merriweather[opsz,wdth,wght].ttf`, `PlayfairDisplay[wght].ttf` load with URL-encoded brackets.
 
