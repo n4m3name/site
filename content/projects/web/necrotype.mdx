@@ -1,0 +1,48 @@
+---
+title: NecroType
+updated: 2026-04-30
+---
+
+<p align="center">
+  <img src="/images/necrotype-app.png"    alt="NecroType desktop view" width="600" />
+  <img src="/images/necrotype-mobile.png" alt="NecroType mobile view"  width="180" />
+</p>
+
+A generative design tool for death/black-metal logos. Type a band name, drag sliders, get a vector logo. Procedural, parameterized, deterministic given a seed: re-roll until you like it, then export as flat SVG or transparent PNG.
+
+No model, no AI, no diffusion. Pure algorithm: glyph extraction → distortion → multi-pass directional extrusion → canvas / SVG render. The form's visual language has been stable since the late 80s; the goal here was to express it as a parameter space and let the sliders do the rest.
+
+## Examples
+
+<p align="center">
+  <img src="/images/necrotype-logos.png"  alt="" width="380" />
+  <img src="/images/necrotype-logos2.png" alt="" width="380" />
+</p>
+
+## Pipeline
+
+Four stages, each a pure function:
+
+1. **Glyph acquisition**: opentype.js extracts cubic Bezier outlines for the chosen font, flattened to dense polylines per character. Bypasses the library's GSUB / Bidi shaping path (some otherwise-good fonts trip its substitution-format support).
+2. **Per-glyph distortion**: affine perturbation (rotation / scale / shear) plus per-vertex coherent-noise displacement.
+3. **Whole-logo transform**: global skew, vertical stretch, perspective tilt, sinusoidal wave, sinusoidal twist.
+4. **Multi-pass directional extrusion**: sample roots on each contour, grow tendrils outward with curl + recursive branching. A spatial hash mediates overlap rejection so tendrils respect each other and letter boundaries; symmetry mirrors the just-grown tendril across the logo's vertical center.
+
+The renderer bins segments by stroke width and chains adjacent segments into single sub-paths so round line caps appear only at real tendril endpoints. SVG export collapses everything into a single `<path>` with `fill-rule: nonzero`, dropping cleanly into Illustrator / Inkscape as one editable shape.
+
+## Stack
+
+- Vite 6, React 19, TypeScript (strict)
+- Tailwind CSS v4 via `@tailwindcss/vite`
+- opentype.js 1.3 for font parsing
+- Single page, no router, no state library; same shell as this site
+
+## Notes
+
+- **"I'm feeling heavy"** randomizes within ranges chosen to produce visually-heavy results (high curl + symmetry + taper, mid stroke, low overlap, low branch). The image at the top of this post was generated this way: no slider tweaking, just press + re-roll the seed.
+- **Time-budget anti-freeze**: at extreme parameter combos (high branch + low overlap + long tendrils) the pipeline can blow up in cost. A 700 ms full-render budget caps it; on overrun the pipeline bails with a partial result and the status bar flags it.
+- **Variable fonts work**: `Cinzel[wght].ttf`, `Oswald[wght].ttf`, `Merriweather[opsz,wdth,wght].ttf`, `PlayfairDisplay[wght].ttf` load with URL-encoded brackets.
+
+## Repository
+
+<a href="https://github.com/n4m3name/NecroType" target="_blank" rel="noreferrer">github.com/n4m3name/NecroType</a>
