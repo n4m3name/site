@@ -8,3 +8,12 @@ updated: 2026-04-23
 Arch/i3 config with install script.
 
 More info at <a href="https://github.com/n4m3name/dotfiles" target="_blank" rel="noreferrer">github.com/n4m3name/dotfiles</a>
+
+---
+
+## Changelog
+
+### 05/10/26
+- Added tabbing/tiling behavior `cycle-tab.py` and `focus-tile.py` (i3ipc helpers) so arrow keys jump straight to the next tile instead of cycling through tabs, and Tab / Shift-Tab cycle within the nearest tabbed/stacked container with wrap.
+- Rebound `$mod+Left/Down/Up/Right` to `focus-tile.py` and `$mod+Tab` / `$mod+Shift+Tab` to `cycle-tab.py` in i3 config.
+- Updated `install.sh` to chmod the new `.py` scripts and add `python-i3ipc` to the pacman dependency list.
