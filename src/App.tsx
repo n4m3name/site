@@ -4,6 +4,7 @@ import Kind from './pages/Kind'
 import Category from './pages/Category'
 import Post from './pages/Post'
 import AboutMe from './pages/AboutMe'
+import Links from './pages/Links'
 import Terminal from './pages/Terminal'
 import NotFound from './pages/NotFound'
 import Void from './pages/Void'
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about-me" element={<AboutMe />} />
+          <Route path="/links" element={<Links />} />
           <Route path="/terminal" element={<Terminal />} />
           <Route path="/void" element={<Void />} />
           <Route path="/:kind" element={<Kind />} />
