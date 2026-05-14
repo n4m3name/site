@@ -1,0 +1,79 @@
+---
+title: Imgen
+updated: 2026-05-13
+---
+
+import RefPreview from '../../../src/components/RefPreview'
+import RefContent from './imgen.ref.mdx'
+
+Headless AI image generation driven from a local CLI against a RunPod 4090. Aesthetic anchored on Cunningham, Giger, Autechre video work, and shitty-camera capture media.
+
+Generation runs in stages: hand-jotted notes → <RefPreview><RefContent /></RefPreview> → `prompts.md` → images. Each stage is a separate file you can edit independently; the next stage gets regenerated from it. Only the first stage is hand-written; everything below it is LLM output the previous stage seeded.
+
+## Pipeline
+
+**1. Notes → `ref.md`.** A short hand-written list of cultural anchors and keywords (Cunningham, Giger, Autechre *Second Bad Vibel*, bad camera, messy server rooms, biotech, breakcore pacing) gets expanded by an LLM into `ref.md`: a structured spec covering direct references, motifs, materials, capture-medium rules, color and light constraints, negative-prompt cues.
+
+**2. `ref.md` → `prompts.md`.** An LLM expands the spec into a numbered batch of prompts. Rules baked in:
+- No explicit color words; LoRAs and negatives govern palette
+- Value / contrast / intensity language only (dim, hard, harsh, blown highlights, crushed shadows)
+- `Photograph of` prefix, medium-wide framing, surveillance / found-footage framing
+- Categories: scenes, characters, vessels, objects, specimens, textures
+
+`imgen N` looks up prompt N and feeds it to ComfyUI.
+
+**3. `prompts.md` → images.** SDXL + a LoRA stack renders each prompt. LoRA stack swaps per "combo" file in `app/workflows/combos/`: e.g. `A_xeno_high.json` = Xenomorph-15 @ 1.0; `N_xeno+alien+pol.json` = Xenomorph-15 + alienzkin-sdxl + Polaroidv2. Same prompt × multiple combos is the variant sweep below.
+
+## Setup
+
+- ComfyUI on a RunPod 4090, driven headless from a local CLI via HTTPS proxy; no SSH tunnel for generation
+- Model weights live on a 50GB Network Volume that survives pod stop and terminate, so neither costs GPU time and `imgen-pod recreate` rebuilds the pod against the same volume non-destructively
+- Pod auto-starts on `imgen N`, runs, auto-stops; on-pod watchdog also self-stops on idle so a local crash doesn't burn GPU
+- SDXL base 1.0 + refiner 1.0, 1024×1024, 25 steps, `dpmpp_2m` / karras, CFG 8
+- Long aesthetic-negative prompt (anti-glossy, anti-warm-tone, anti-portrait, anti-magenta, anti-render)
+
+## Selected
+
+<figure className="my-8">
+  <img src="/images/imgen/s002-N_xeno+alien+pol-s3991.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph of a derelict tech room thick with patch cables and rusted server racks, a glass containment box on the floor holding something fleshy pressed against the inside, biohazard tape across the open doorway, dim magenta CRT phosphor from a broken monitor in the corner, condensation on every glass surface, low-light digital sensor grain, found-footage framing, deep blacks.</figcaption>
+</figure>
+
+<figure className="my-8">
+  <img src="/images/imgen/c002-C_xeno+touchgrain-s19904.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph of a column of fused viscera and metal struts standing in a derelict containment cell, no head no face, capillaries glowing faint red beneath translucent membrane, fluid pooling at the base, broken cables hanging from the ceiling, dim red interior glow, surveillance camera infrared night-vision, IR sensor grain, security timestamp burned in.</figcaption>
+</figure>
+
+<figure className="my-8">
+  <img src="/images/imgen/s001-N_xeno+alien+pol-s17923.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph of a dim cluttered surveillance room overgrown with bundled cables and exposed circuit boards, dozens of CRT monitors stacked floor-to-ceiling showing corrupted security feeds, a tangle of biological tubing hanging from the ceiling dripping dark fluid into a puddle, single sickly fluorescent green tube light, REC indicator top-left, timestamp `19960714 23:47` burned in, deep crushed shadows, photographic.</figcaption>
+</figure>
+
+<figure className="my-8">
+  <img src="/images/imgen/s003-A_xeno_high-s18887.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph through a small reinforced observation window into a scary tech-cluttered chamber, exposed wiring snaking across the floor, a biomechanical mass restrained on a steel table, IV stand and broken oscilloscope at frame edge, harsh white surgical fluorescent overhead, faint LAB 7 stencil on the back wall, partial reflection in the foreground glass making the geometry confusing, photographic, photorealistic.</figcaption>
+</figure>
+
+<figure className="my-8">
+  <img src="/images/imgen/s003-N_xeno+alien+pol-s4089.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph through a small reinforced observation window into a scary tech-cluttered chamber, exposed wiring snaking across the floor, a biomechanical mass restrained on a steel table, IV stand and broken oscilloscope at frame edge, harsh white surgical fluorescent overhead, faint LAB 7 stencil on the back wall, partial reflection in the foreground glass making the geometry confusing, photographic, photorealistic.</figcaption>
+</figure>
+
+<figure className="my-8">
+  <img src="/images/imgen/c002-A_xeno_high-s28487.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph of an animate column of fused viscera and metal struts inside a brass-and-glass containment tank, no head no face, capillaries glowing faint red beneath translucent membrane, fluid streaming from gaps, dim red interior glow, tangle of cables and pipes connecting the tank to a wall of broken equipment, surveillance camera infrared night-vision, IR sensor grain, security timestamp burned in.</figcaption>
+</figure>
+
+<figure className="my-8">
+  <img src="/images/imgen/s002-C_xeno+touchgrain-s21146.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph of a flooded service tunnel lined with conduit and bundled wiring, dark fluid pooled around the drains, a half-collapsed equipment rack at the back with red status LEDs reflecting in the water, single sickly fluorescent green tube light from above, low-light sensor grain, deep crushed blacks, found-footage framing.</figcaption>
+</figure>
+
+<figure className="my-8">
+  <img src="/images/imgen/c003-A_xeno_high-s3893.png" alt="" className="block w-full" />
+  <figcaption className="mt-3 italic text-sm text-white/60">Photograph of an insectile biomechanical amalgam scuttling across a rust-stained metal wall in a tech-cluttered service tunnel, chitinous limbs mid-articulation, mandibles partially open, fluid streaks down the wall, pipes and bundled wiring filling the background, single hard red rim light from below, pure black surround, photographic, deep crushed shadows.</figcaption>
+</figure>
+
+## Next steps
+
+WIP. Stills are landing; video is the next step. Tricky due to current models' tendency toward slow, smooth motion. Testing alternative video models and prompting strategies for more complexity & aggression.

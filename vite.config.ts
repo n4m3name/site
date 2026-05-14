@@ -13,6 +13,7 @@ export default defineConfig({
     {
       enforce: 'pre',
       ...mdx({
+        mdExtensions: [],
         remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkMath],
         rehypePlugins: [
           [rehypeShiki, { theme: 'vitesse-black' }],

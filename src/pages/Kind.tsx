@@ -39,6 +39,8 @@ export default function Kind() {
       <div className="relative flex-1 px-3 pt-0 pb-3 grid gap-3 grid-cols-1 md:grid-cols-2">
         {safeCategories.map((c, i) => {
           const active = activeIdx === i
+          const isOddLast =
+            safeCategories.length % 2 === 1 && i === safeCategories.length - 1
           return (
             <Link
               key={c.slug}
@@ -47,8 +49,8 @@ export default function Kind() {
               onMouseEnter={() => onItemHover(i)}
               onMouseLeave={onItemLeave}
               className={`relative border transition-colors bg-black px-8 py-12 flex flex-col justify-between min-h-[180px] ${
-                active ? 'border-[var(--accent)]' : 'border-white/40'
-              }`}
+                isOddLast ? 'md:col-span-2' : ''
+              } ${active ? 'border-[var(--accent)]' : 'border-white/40'}`}
             >
               <span
                 className={`text-2xl uppercase tracking-widest transition-colors ${

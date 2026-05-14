@@ -57,6 +57,9 @@ function buildContent(): Record<Kind, Category[]> {
     const m = path.match(/^\/content\/([^/]+)\/([^/]+)\/([^/]+)\.mdx$/)
     if (!m) continue
     const [, kind, category, slug] = m
+    // Files with a dot in the slug (e.g. `imgen.ref.mdx`) are sidecar MDX
+    // imported by another post; not a standalone post.
+    if (slug.includes('.')) continue
     const post: Post = {
       slug,
       title: fm.title ?? slugToTitle(slug),

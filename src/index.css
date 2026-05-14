@@ -1,10 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Source Code Pro", ui-monospace, Menlo, Consolas, monospace;
+  --font-mono: "Source Code Pro", ui-monospace, Menlo, Consolas, monospace;
+}
+
 :root {
   --accent: #E60012;
   --bg: #000000;
   --fg: #ffffff;
-  font-family: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+  font-family: "Source Code Pro", ui-monospace, Menlo, Consolas, monospace;
   color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -29,6 +34,10 @@ html, body, #root {
 /* MDX body styling */
 .prose-mdx { color: rgb(255 255 255 / 0.7); line-height: 1.65; }
 .prose-mdx > * + * { margin-top: 1.25rem; }
+.prose-mdx h1 {
+  color: #fff; font-size: 1.5rem; text-transform: uppercase;
+  letter-spacing: 0.2em; margin-top: 3rem;
+}
 .prose-mdx h2 {
   color: #fff; font-size: 1.25rem; text-transform: uppercase;
   letter-spacing: 0.2em; margin-top: 3rem;

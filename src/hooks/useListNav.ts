@@ -89,6 +89,9 @@ export function useListNav({
       } else if (k === 'ArrowDown') {
         const next = kbIdx + cols
         if (next < count) setKbIdx(next)
+        // If the slot directly below is empty but a later row exists with
+        // fewer items than columns, snap to the last item.
+        else if (Math.floor((count - 1) / cols) > row) setKbIdx(count - 1)
         // else: no-op
       } else if (k === 'ArrowLeft') {
         if (col > 0) setKbIdx(kbIdx - 1)
