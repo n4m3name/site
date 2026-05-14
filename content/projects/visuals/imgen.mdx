@@ -15,7 +15,7 @@ Generation runs in stages: hand-jotted notes → <RefPreview><RefContent /></Ref
 
 **1. Notes → `ref.md`.** A short hand-written list of cultural anchors and keywords (Cunningham, Giger, Autechre *Second Bad Vibel*, bad camera, messy server rooms, biotech, breakcore pacing) gets expanded by an LLM into `ref.md`: a structured spec covering direct references, motifs, materials, capture-medium rules, color and light constraints, negative-prompt cues.
 
-**2. `ref.md` → <RefPreview label="prompts.md"><PromptsContent /></RefPreview>.** An LLM expands the spec into a numbered batch of prompts. Rules baked in:
+**2. `ref.md` → <`prompts.md`.** An LLM expands the spec into a numbered batch of prompts. Rules baked in:
 - No explicit color words; LoRAs and negatives govern palette
 - Value / contrast / intensity language only (dim, hard, harsh, blown highlights, crushed shadows)
 - `Photograph of` prefix, medium-wide framing, surveillance / found-footage framing
