@@ -30,9 +30,18 @@ const COMMANDS = [
   ['t', 'terminal'],
   ['c', 'cycle accent color'],
   ['a', 'about me'],
+  ['l', 'links'],
   ['m', 'music'],
   ['w', 'writing'],
   ['g', 'glitch burst'],
+]
+
+const LINKS: { href: string; label: string }[] = [
+  { href: 'https://www.instagram.com/_sys.ex__/', label: 'instagram.com/_sys.ex__' },
+  { href: 'https://www.tiktok.com/@sys.ex', label: 'tiktok.com/@sys.ex' },
+  { href: 'https://www.youtube.com/@_sysex', label: 'youtube.com/@_sysex' },
+  { href: 'https://3v4n.netlify.app', label: '3v4n.netlify.app' },
+  { href: 'https://ko-fi.com/sysex', label: 'ko-fi.com/sysex' },
 ]
 
 const NAV = [
@@ -48,16 +57,18 @@ export default function GlobalFx() {
   const [showMap, setShowMap] = useState(false)
   const [showTree, setShowTree] = useState(false)
   const [showAbout, setShowAbout] = useState(false)
+  const [showLinks, setShowLinks] = useState(false)
   const accentIdx = useRef(0)
   const navRef = useRef(navigate)
   navRef.current = navigate
   const overlayRef = useRef<HTMLDivElement | null>(null)
   const treeRef = useRef<HTMLDivElement | null>(null)
   const aboutRef = useRef<HTMLDivElement | null>(null)
-  const stateRef = useRef({ showMap, showTree, showAbout })
-  stateRef.current = { showMap, showTree, showAbout }
+  const linksRef = useRef<HTMLDivElement | null>(null)
+  const stateRef = useRef({ showMap, showTree, showAbout, showLinks })
+  stateRef.current = { showMap, showTree, showAbout, showLinks }
 
-  const anyOpen = showMap || showTree || showAbout
+  const anyOpen = showMap || showTree || showAbout || showLinks
   useEffect(() => {
     setListNavSuspended(anyOpen)
     document.body.style.overflow = anyOpen ? 'hidden' : ''
@@ -85,18 +96,19 @@ export default function GlobalFx() {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
       if (e.metaKey || e.ctrlKey || e.altKey) return
 
-      const { showMap: sm, showTree: st, showAbout: sa } = stateRef.current
-      const anyOpen = sm || st || sa
+      const { showMap: sm, showTree: st, showAbout: sa, showLinks: sl } = stateRef.current
+      const anyOpen = sm || st || sa || sl
       const closeAll = () => {
         setShowMap(false)
         setShowTree(false)
         setShowAbout(false)
+        setShowLinks(false)
       }
 
       // When an overlay is open, handle scroll/nav keys in overlay context.
       // SiteTree owns arrow keys + Enter for cursor nav, so skip those when st.
       if (anyOpen) {
-        const el = sm ? overlayRef.current : st ? treeRef.current : aboutRef.current
+        const el = sm ? overlayRef.current : st ? treeRef.current : sa ? aboutRef.current : linksRef.current
         const inTree = st
         const step = 40
         if (e.key === 'Escape') {
@@ -157,14 +169,22 @@ export default function GlobalFx() {
         setShowMap((v) => !v)
         setShowTree(false)
         setShowAbout(false)
+        setShowLinks(false)
       } else if (e.key === 's') {
         setShowTree((v) => !v)
         setShowMap(false)
         setShowAbout(false)
+        setShowLinks(false)
       } else if (e.key === 'a') {
         setShowAbout((v) => !v)
         setShowMap(false)
         setShowTree(false)
+        setShowLinks(false)
+      } else if (e.key === 'l') {
+        setShowLinks((v) => !v)
+        setShowMap(false)
+        setShowTree(false)
+        setShowAbout(false)
       } else if (e.key === 'm') {
         closeAll()
         navRef.current('/audio')
@@ -244,6 +264,35 @@ export default function GlobalFx() {
               <AboutBody />
             </div>
             <p className="mt-8 font-mono text-white/40 text-xs">press a or click outside to close</p>
+          </div>
+        </div>
+      )}
+      {showLinks && (
+        <div
+          ref={linksRef}
+          data-glitchable
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm overflow-auto p-8"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowLinks(false)
+          }}
+        >
+          <div className="w-fit">
+            <h2 className="font-mono text-sm text-[var(--accent)] uppercase tracking-widest mb-6">Links</h2>
+            <ul className="font-mono text-sm space-y-1">
+              {LINKS.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[var(--accent)] hover:text-white transition-colors"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 font-mono text-white/40 text-xs">press l or click outside to close</p>
           </div>
         </div>
       )}
