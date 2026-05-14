@@ -9,6 +9,15 @@ import Terminal from './pages/Terminal'
 import NotFound from './pages/NotFound'
 import Void from './pages/Void'
 import GlobalFx from './components/GlobalFx'
+import { useLocation } from 'react-router-dom'
+
+const STANDALONE_ROUTES = new Set(['/links'])
+
+function ConditionalGlobalFx() {
+  const { pathname } = useLocation()
+  if (STANDALONE_ROUTES.has(pathname)) return null
+  return <GlobalFx />
+}
 
 function App() {
   return (
@@ -27,7 +36,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      <GlobalFx />
+      <ConditionalGlobalFx />
     </BrowserRouter>
   )
 }
