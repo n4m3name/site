@@ -278,7 +278,7 @@ export default function GlobalFx() {
           }}
         >
           <div className="w-fit">
-            <h2 className="font-mono text-sm text-[var(--accent)] uppercase tracking-widest mb-6">Links</h2>
+            <h2 className="font-mono text-sm text-white uppercase tracking-widest mb-6">Links</h2>
             <ul className="font-mono text-sm space-y-1">
               {LINKS.map((l) => (
                 <li key={l.href}>
