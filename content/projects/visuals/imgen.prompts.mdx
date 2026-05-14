@@ -1,0 +1,43 @@
+# Prompts  
+
+**Image** prompts for SDXL base + xeno LoRA stack. Patterns refined from `outputs/keepers/`. Drawn from `ref.md`.  
+
+Run images:  
+```bash
+imgen s2                                             # default workflow
+imgen s2 --workflow workflows/combos/<combo>.json    # specific combo
+imgen s2 --seed 42 --keep                            # specific seed
+imgen "literal text"                                 # ad hoc
+```
+Images land in `outputs/images/<category>/<id>-s<seed>.png`.  
+
+**Rules:**  
+- **No specific color words anywhere** (no red / magenta / green / blue / pink / yellow / orange). The LoRAs and negatives govern palette; explicit color names in prompt bias toward saturated single-color renders.  
+- Use **value / contrast / intensity** language instead: dim, hard, harsh, low-key, single-source, directional, blown highlights, deep crushed shadows, pure black surround.  
+- Medium-wide framing, subject in tech-cluttered space, surveillance / found-footage framing, "Photograph of" prefix, no direct references.  
+
+---
+
+## Scenes (derelict tech rooms with biotech presence)  
+
+1. Photograph of a derelict tech room thick with patch cables and rusted server racks, a glass containment box on the floor holding something fleshy pressed against the inside, biohazard tape across the open doorway, single broken CRT casting a low monochromatic glow from the corner, condensation on every glass surface, low-light digital sensor grain, found-footage framing, deep crushed shadows.  
+2. Photograph of a flooded service tunnel lined with conduit and bundled wiring, dark fluid pooled around the drains, a half-collapsed equipment rack at the back with single status indicator reflecting in the water, single harsh fluorescent tube light from above, low-light sensor grain, deep crushed shadows, found-footage framing.  
+3. Photograph of an abandoned observation chamber, a stainless examination table in the middle of the floor covered in tangled cables and ribbon connectors weeping clear fluid, broken monitors stacked in the corner showing static, single low-key rim light from a desk lamp, pure black surround beyond, photographic, sensor grain.  
+
+## Characters (biomechanical entities in tech-cluttered space)  
+
+1. Photograph of a fused biomechanical mass slumped against the wall of a service tunnel, no recognizable anatomy, dark fluid pooling beneath, exposed wiring threaded through the form, pipes and conduit filling the background, single hard directional rim light from below, pure black surround, photographic, deep crushed shadows.  
+2. Photograph of a column of fused viscera and metal struts standing in a derelict containment cell, no head no face, faintly glowing capillaries visible beneath translucent membrane, fluid pooling at the base, broken cables hanging from the ceiling, low-key interior glow, surveillance camera infrared night-vision, IR sensor grain, security timestamp burned in.  
+3. Photograph of a writhing biomechanical form half-fused with the wall of an abandoned lab, exposed circuitry growing into raw tissue, broken monitors and tangled wiring filling the background, single low-key monochromatic cast from broken displays, low-light digital sensor grain, deep crushed shadows, photographic.  
+
+## Vessels (containment with specimens)  
+
+1. Photograph of an animate column of fused viscera and metal struts inside a brass-and-glass containment tank in a derelict tech room, no head no face, faintly glowing capillaries visible beneath translucent membrane, fluid streaming from gaps, low-key interior glow, tangle of cables and pipes connecting the tank to a wall of broken equipment, surveillance camera infrared night-vision, IR sensor grain, security timestamp burned in.  
+2. Photograph of a tall glass cylinder filled with dark fluid in the corner of an abandoned lab, faint movement visible inside the cylinder, broken monitors casting low-key glow in the background, tangled cables snaking around the base, harsh fluorescent fill, low-light sensor grain, deep crushed shadows beneath, photographic.  
+3. Photograph of three biomechanical specimens in glass containment jars on a stainless rack, each specimen partially submerged in fluid, IV lines running into each jar, biohazard signage above, broken monitors and tangled wiring behind, harsh single fluorescent overhead, low-light sensor grain, photographic, deep crushed shadows.  
+
+## Specimens (subjects pinned to surfaces)  
+
+1. Photograph of a biomechanical specimen pinned spread-eagle to a rust-stained service-tunnel wall, exposed wiring threaded through its joints, dark fluid streaking down the wall beneath it, conduit and bundled cables crossing the background, single hard directional rim light from the side, pure black surround, photographic, deep crushed shadows.  
+2. Photograph of a fused biomechanical form fixed to a stainless steel surgical wall mount, exterior broken open to reveal raw circuitry inside, broken monitors and equipment racks in the dim background, single low-key cast from a broken display, low-light digital sensor grain, deep crushed shadows, photographic, found-footage framing.  
+3. Photograph of a flayed biomechanical organism mounted on a steel grate above a drain pool, dark fluid dripping into the water below, pipes and conduit framing the scene, single dim emergency light from above, pure black surround, surveillance camera framing, IR sensor grain, deep crushed shadows.  
