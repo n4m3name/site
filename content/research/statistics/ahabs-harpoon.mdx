@@ -1,0 +1,270 @@
+---
+title: Ahab's Harpoon
+updated: 2026-06-02
+---
+
+export const Result = ({ corpus, tp, fn, fp, tn, cstar, sens, spec, prec, f1 }) => {
+  const base = {
+    padding: '0.55rem 0.9rem',
+    textAlign: 'center',
+    fontVariantNumeric: 'tabular-nums',
+    border: '1px solid rgba(255,255,255,0.18)',
+  }
+  const good = { ...base, color: '#fff', background: 'rgba(255,255,255,0.05)', fontWeight: 600 }
+  const bad = { ...base, color: '#E60012', background: 'rgba(230,0,18,0.16)' }
+  const head = { ...base, border: 'none', color: 'rgba(255,255,255,0.7)' }
+  const rowlab = { ...base, border: 'none', textAlign: 'right', color: 'rgba(255,255,255,0.7)', whiteSpace: 'nowrap' }
+  const metric = [['Ĉ*', cstar], ['Sensitivity', sens], ['Specificity', spec], ['Precision', prec], ['F1', f1]]
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', margin: '1.5rem 0 2.5rem' }}>
+      <table style={{ borderCollapse: 'collapse', width: 'auto' }}>
+        <tbody>
+          <tr><td style={head}></td><td style={head}>flagged</td><td style={head}>not flagged</td></tr>
+          <tr><td style={rowlab}>did not replicate</td><td style={good}>{tp}</td><td style={bad}>{fn}</td></tr>
+          <tr><td style={rowlab}>replicated</td><td style={bad}>{fp}</td><td style={good}>{tn}</td></tr>
+        </tbody>
+      </table>
+      <div style={{ border: '1px solid rgba(255,255,255,0.18)', padding: '0.85rem 1.6rem' }}>
+        <table style={{ borderCollapse: 'collapse', width: 'auto' }}>
+          <tbody>
+            {metric.map(([k, v]) => (
+              <tr key={k}>
+                <td style={{ padding: '0.3rem 2.2rem 0.3rem 0', border: 'none', color: 'rgba(255,255,255,0.7)' }}>{k}</td>
+                <td style={{ padding: '0.3rem 0', border: 'none', textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#fff' }}>{v}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+export const Fig = ({ src, alt, caption }) => (
+  <figure style={{ margin: '2.5rem 0' }}>
+    <img src={src} alt={alt} style={{ width: '100%', display: 'block' }} />
+    {caption && (
+      <figcaption style={{ marginTop: '0.6rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textAlign: 'center' }}>
+        {caption}
+      </figcaption>
+    )}
+  </figure>
+)
+
+export const Rule = () => (
+  <hr aria-hidden="true" style={{ border: 'none', borderTop: '1px solid rgba(230,0,18,0.55)', margin: '4rem 0 0.5rem' }} />
+)
+
+<p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.8)' }}>
+  <strong>Calibrated Irreplicability Detection with Approximate Objective Bayes Factors.</strong>
+</p>
+
+<p style={{ color: 'rgba(255,255,255,0.8)' }}>
+  E. Strasdin, F. S. Nathoo, P. Velidi, Z. Wei<br />
+  Department of Mathematics and Statistics, University of Victoria<br />
+  Correspondence: <a href="mailto:evanastrasdin@uvic.ca">evanastrasdin@uvic.ca</a>
+</p>
+
+Replicability is under sustained scrutiny: only 11% of landmark preclinical cancer findings replicate, and roughly 90% of drug-development trials fail for lack of efficacy. We ask a concrete question: given a corpus of historical results, each reporting a $p$-value $p$, sample size $n$, and test dimension $q$, can we flag the subset of significant findings that will fail to replicate?
+
+<Fig src="/images/eJAB/flow_chart.svg" alt="Pipeline: corpus to eJAB to contradiction check to flag or pass" />
+
+<Rule />
+
+## 1. Theory
+
+### The eJAB approximation to the Bayes factor
+
+Velidi et al. (2025) give a generalized Jeffreys's approximate objective Bayes factor in closed form, needing only $(p, n, q)$:
+
+$$
+\mathrm{eJAB}_{01}(p,n,q) = \sqrt{n}\,\exp\!\left\{ -\tfrac{1}{2}\,\frac{n^{1/q}-1}{n^{1/q}}\,Q_{\chi^{2}_{q}}(1-p) \right\},
+$$
+
+with $Q_{\chi^2_q}$ the chi-squared quantile function. It is a closed-form approximation, in $(p, n, q)$ alone, to the Bayes factor for $\mathcal{H}_0$ against $\mathcal{H}_1$ under a unit-information prior: no priors to elicit, no numerical integration, no MCMC. $\mathrm{eJAB}_{01} > 1$ is Bayesian support for the null. Corpus-scale screening of historical $p$-values is feasible precisely because the approximation is this cheap.
+
+A **Bayes/NHST contradiction** is a result significant at level $\alpha$ ($p \leq \alpha$) that nonetheless earns Bayesian support for the null ($\mathrm{eJAB}_{01} > C$). We call them candidates for non-replication. Velidi et al. fix $C = 1$; this choice is not optimal, so we treat $C$ as a tunable parameter and *calibrate $\hat C^{*}$ from the corpus itself*.
+
+### Derivation 1: the contradiction cutoff
+
+The eJAB map is strictly monotone in $p$, so the contradiction condition inverts to a lower $p$-value cutoff dependent on sample size $n$ and test dimension $q$. Abbreviate:
+
+$$
+g(n,q,C) = \frac{2\,n^{1/q}}{n^{1/q}-1}\,\log\frac{\sqrt n}{C}.
+$$
+
+Taking logarithms of $\mathrm{eJAB}_{01} > C$, then applying the chi-squared CDF $F_{\chi^2_q}$:
+
+$$
+\mathrm{eJAB}_{01} > C \;\Longleftrightarrow\; Q_{\chi^2_q}(1-p) < g(n,q,C) \;\Longleftrightarrow\; p > 1 - F_{\chi^2_q}\!\big(g(n,q,C)\big).
+$$
+
+Defining $f(n,q,C) = 1 - F_{\chi^2_q}(g)$, a result is a contradiction **iff** $p \in (f, \alpha]$: the threshold $C$ acts as a per-test lower $p$-value cutoff $f$. Crucially, $g$ (and hence $f$) depends on both $n$ and $q$, so a single $C$ induces a *different* $p$-value cutoff for every test in the corpus.
+
+### Derivation 2: calibrating Ĉ*
+
+> **Key assumption (left-tail uniformity).** A true-null $p$-value, conditioned on $p \leq u_p$, is uniform: $\;p \mid p \leq u_p, \mathcal{H}_0 \sim \mathrm{Unif}(0, u_p)$.
+
+A true-null window study is then significant at level $\alpha$ with probability exactly $\alpha / u_p$. The empirical contradiction rate
+
+$$
+\hat{\mathbb{P}}(\alpha, C) = \frac{1}{N}\!\!\sum_{i:\,p_i \leq u_p}\!\! \mathbf{1}\!\left[p_i \leq \alpha,\ \mathrm{eJAB}_{01,i} > C\right]
+$$
+
+is a step function in $\alpha$. We pick $\hat C^{*}$ so it tracks the target $\alpha / u_p$ in integrated squared error:
+
+$$
+\hat C^{*} = \operatorname*{arg\,min}_{C \geq 0} \int_0^{u_p}\!\big(\hat{\mathbb{P}}(\alpha, C) - \alpha/u_p\big)^2 \, d\alpha.
+$$
+
+Since $\hat{\mathbb{P}}$ is piecewise constant, the integral collapses to a finite, closed-form sum over ordered $p$-values $p_{(1)} < \dots < p_{(J)}$ (with $p_{(J+1)} = u_p$):
+
+$$
+\sum_{j=1}^{J}(p_{(j+1)} - p_{(j)})\,\hat{\mathbb{P}}(p_{(j)}, C)^2 - \frac{1}{u_p N}\sum_{j=1}^{J}\xi_j^{C}\big(u_p^2 - p_{(j)}^2\big) + \frac{u_p}{3},
+$$
+
+where $\xi_j^{C}$ counts window results at $p_{(j)}$ with $\mathrm{eJAB}_{01} > C$; the minimiser is found by grid search on $C \in [0, 3]$.
+
+> **Detection rule.** Flag study $i$ as likely not to replicate if $\;p_i \leq \alpha\;$ and $\;\mathrm{eJAB}_{01,i} > \hat C^{*}$.
+
+<Fig src="/images/eJAB/rpp_calibration.svg" alt="RPP calibration curve" caption="Derivation 2 in practice: on the RPP corpus the empirical contradiction rate at Ĉ* (solid) tracks the calibration target α/uₚ (dashed)." />
+
+### Diagnostics
+
+After flagging we check whether the flagged set behaves as a genuine collection of non-replications should. By Derivation 1 each candidate sits in $p_i \in (f_i, \alpha]$; under left-tail uniformity, conditioning on $\mathcal{H}_0$ gives $p_i \mid \mathcal{H}_0, p_i \in (f_i, \alpha] \sim \mathrm{Unif}(f_i, \alpha]$. Affinely rescale to the unit interval, then push through the standard-normal quantile $\Phi^{-1}$:
+
+$$
+U_i = \frac{p_i - f_i}{\alpha - f_i} \sim \mathrm{Unif}(0,1), \qquad Z_i = \Phi^{-1}(U_i) \sim N(0,1).
+$$
+
+The $Z$ scale reads directly: the normal QQ-plot is a straight line, and an index plot of $Z_i$ carries flat $\pm 2$ bands. Candidates with $|Z_i| > 2$ are flagged for review as unlikely to be true non-replications, and may be false positives.
+
+<Rule />
+
+## 2. Implementation
+
+The method ships as two tools: an **R package** for scripted workflows and a **JASP module** for point-and-click use. Both take one row per hypothesis test (columns $p$, $n$, $q$, study ID) and share the defaults $\alpha = 0.05$, $u_p = 0.10$.
+
+### R package: `ejabT1E`
+
+A small set of base-R functions (only `stats` imported) implementing the calibrated detector and its diagnostics. The high-level entry point `ejab_pipeline()` returns $\hat C^{*}$, the objective value, the candidate rows, the diagnostic $U_i$ values, and all $\mathrm{eJAB}_{01}$ values.
+
+- `ejab01(p, n, q)` — the $\mathrm{eJAB}_{01}$ Bayes factor.
+- `estimate_Cstar(p, ejab, up)` — grid search for $\hat C^{*}$.
+- `detect_type1(p, ejab, alpha, Cstar)` — flag candidates.
+- `diagnostic_U(p, n, q, alpha, Cstar)` — the QQ / $Z$ diagnostics.
+- `ejab_pipeline(df, up, alpha)` — the full pipeline.
+
+```r
+library(ejabT1E)
+res <- ejab_pipeline(df, up = 0.10, alpha = 0.05)
+res$Cstar       # calibrated threshold
+res$candidates  # flagged non-replications
+```
+
+Lower-level functions compose the steps explicitly and reproduce the pipeline output exactly; $\hat C^{*}$ is obtained by closed-form evaluation of the objective from Derivation 2.
+
+### JASP module: Ahab's Harpoon
+
+[JASP](https://jasp-stats.org) is a free, open-source point-and-click statistics platform widely used in psychology. The **Ahab's Harpoon** module exposes the full detector as a single *eJAB Analysis*: assign the $p$, $n$, $q$, and study-ID columns, set $\alpha$ and $u_p$, and the module produces
+
+- a **summary table** ($\hat C^{*}$, objective value, candidates flagged, valid rows) and a **candidates table** ($\mathrm{eJAB}_{01}$ for each flagged result);
+- a **calibration plot**: contradiction rate against $\alpha$ versus the target $\alpha / u_p$;
+- the two **$Z$-diagnostic plots**: a normal QQ-plot of $Z$ and an index plot of $Z$ with $\pm 2$ bands.
+
+The RPP and RPCB datasets ship bundled as worked examples.
+
+### Z diagnostic output (RPP corpus)
+
+The two diagnostic plots produced by the pipeline on the audited RPP corpus. Under $Z \sim N(0,1)$ the QQ-plot is straight and the index plot stays within $\pm 2$.
+
+<Fig src="/images/eJAB/z_qqnorm.svg" alt="Z-diagnostic normal QQ-plot" caption="QQ-plot: straight under Z ~ N(0,1). Red = did not replicate, white = replicated." />
+
+<Fig src="/images/eJAB/z_index.svg" alt="Z-diagnostic index plot with ±2 bands" caption="Index plot with ±2 bands; candidates outside the bands are flagged for review." />
+
+<Rule />
+
+## 3. Simulation studies
+
+We validate the calibrated detector on synthetic corpora where the null/non-null label of each test is known. For a target true-null proportion $\pi_0$ and effect-size distribution on the non-nulls, we draw $(p_i, n_i, q_i)$ jointly, compute $\hat C^{*}$ on the simulated corpus, and score the flagging rule against ground truth. We sweep $\pi_0$, the effect-size scale, and $(n, q)$ ranges across replicates.
+
+<Fig src="/images/eJAB/poster_sim_ttest.svg" alt="ROC curves and AUC distributions for the t-test simulation" caption="ROC curves (top) and AUC distributions (bottom) for the t-test simulation, across Cohen's d ∈ {0.2, 0.5, 0.8} and n ∈ {15, 30, 50, 100, 200}. Stars mark the estimated Ĉ* operating point; circles mark the Velidi-et-al. default C = 1." />
+
+<Rule />
+
+## 4. Application
+
+As a test bed we use three large replication corpora, spanning psychology (RPP), preclinical cancer biology (RPCB), and the social and behavioural sciences (SCORE / DARPA). Each pairs original findings with independent replication outcomes, so the method can be scored against ground truth via confusion matrices. The decision rule is the *locked default*, not retuned per corpus; metrics use the significant subset ($p < \alpha$), with "did not replicate" as the positive class. In the matrices below, **red cells are errors** and light cells are correct decisions.
+
+### RPP — Reproducibility Project: Psychology
+
+Open Science Collaboration (2015): 94 audited studies with usable $(p, n, q)$ and a replication outcome; 87 significant, 54 of those failed to replicate.
+
+<Result corpus="RPP" tp={43} fn={11} fp={13} tn={20} cstar="0.045" sens="0.796" spec="0.606" prec="0.768" f1="0.782" />
+
+### RPCB — Reproducibility Project: Cancer Biology
+
+Errington et al. (2021): 132 preclinical cancer-biology effects with usable $(p, n, q)$ and outcome; 113 significant, 52 failed to replicate.
+
+<Result corpus="RPCB" tp={39} fn={13} fp={24} tn={37} cstar="0.015" sens="0.750" spec="0.607" prec="0.619" f1="0.678" />
+
+### SCORE — Social and Behavioural Sciences
+
+SCORE replication corpus (OSF `g5sny`): 287 claims, 255 significant. Locked specification: analyst replication call, any-TRUE aggregation.
+
+<Result corpus="SCORE" tp={93} fn={53} fp={56} tn={53} cstar="0.196" sens="0.637" spec="0.486" prec="0.624" f1="0.631" />
+
+A sensitivity analysis over 12 ground-truth measures × 4 aggregation rules gives F1 in $0.32$–$0.72$ (median $0.55$); the locked specification sits at the 77th percentile of that range.
+
+### Data-driven versus fixed threshold
+
+Benjamin et al. (2018), among others, propose lowering the significance threshold to $0.005$: under the lower $\alpha$ threshold we will have fewer type I errors, and therefore results that survive the lower threshold are better candidates for studies that will replicate. We compare Ahab's Harpoon and $p > 0.005$ head-to-head on the audited corpora.
+
+<table style={{ borderCollapse: 'collapse', margin: '1.5rem 0', width: 'auto' }}>
+  <thead>
+    <tr>
+      <th style={{ border: 'none', padding: '0.45rem 2rem 0.45rem 0', textAlign: 'left', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.8rem', borderBottom: '1px solid rgba(255,255,255,0.25)' }}>F1</th>
+      <th style={{ border: 'none', padding: '0.45rem 2rem', textAlign: 'right', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.8rem', borderBottom: '1px solid rgba(255,255,255,0.25)' }}>Ahab's</th>
+      <th style={{ border: 'none', padding: '0.45rem 0 0.45rem 2rem', textAlign: 'right', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.8rem', borderBottom: '1px solid rgba(255,255,255,0.25)' }}>p &gt; .005</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ border: 'none', padding: '0.45rem 2rem 0.45rem 0', color: 'rgba(255,255,255,0.85)' }}>RPP</td>
+      <td style={{ border: 'none', padding: '0.45rem 2rem', textAlign: 'right', color: '#fff', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>0.782</td>
+      <td style={{ border: 'none', padding: '0.45rem 0 0.45rem 2rem', textAlign: 'right', color: 'rgba(255,255,255,0.65)', fontVariantNumeric: 'tabular-nums' }}>0.660</td>
+    </tr>
+    <tr>
+      <td style={{ border: 'none', padding: '0.45rem 2rem 0.45rem 0', color: 'rgba(255,255,255,0.85)' }}>RPCB</td>
+      <td style={{ border: 'none', padding: '0.45rem 2rem', textAlign: 'right', color: '#fff', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>0.678</td>
+      <td style={{ border: 'none', padding: '0.45rem 0 0.45rem 2rem', textAlign: 'right', color: 'rgba(255,255,255,0.65)', fontVariantNumeric: 'tabular-nums' }}>0.539</td>
+    </tr>
+  </tbody>
+</table>
+
+A data-adaptive $\hat C^{*}$ varies with the corpus where one universal $p$-value boundary cannot, and yields higher F1 on both audited corpora, driven mainly by higher sensitivity.
+
+<Rule />
+
+## Funding & acknowledgements
+
+Travel support provided by the UVic Department of Mathematics and Statistics (Chair's office) and the UVic Statistical Consulting Centre. Computing resources provided by the Digital Research Alliance of Canada (DRAC); we thank Sarah Huber for technical support.
+
+<Rule />
+
+## References
+
+1. Velidi P, Wei Z, et al. Generalized Jeffreys's approximate objective Bayes factor. *arXiv*:2510.10358 (2025).
+2. Strasdin E, Velidi P, Wei Z, Nathoo FS. Ahab's Harpoon: Predicting Irreplicability with Generalized Approximate Objective Bayes Factors. *Manuscript in preparation* (2026).
+3. Open Science Collaboration. Estimating the reproducibility of psychological science. *Science* 349:aac4716 (2015).
+4. Errington TM, et al. Investigating the replicability of preclinical cancer biology. *eLife* 10:e71601 (2021).
+5. Benjamin DJ, et al. Redefine statistical significance. *Nat. Hum. Behav.* 2:6–10 (2018).
+6. Tyner AH, et al. Investigating the replicability of the social and behavioural sciences. *Nature* 652:143 (2025). SCORE corpus, OSF `osf.io/g5sny`.
+
+<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.4rem', margin: '4.5rem 0 1rem' }}>
+  <img src="/images/eJAB/uvic_logo.svg" alt="University of Victoria" style={{ height: '2.6rem' }} />
+  <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
+    <img src="/images/eJAB/nathoo_logo.webp" alt="Nathoo Group" style={{ height: '4.4rem', width: 'auto' }} />
+    <span style={{ textTransform: 'uppercase', letterSpacing: '0.18em', fontSize: '1rem', color: '#fff' }}>Nathoo Group</span>
+  </div>
+</div>

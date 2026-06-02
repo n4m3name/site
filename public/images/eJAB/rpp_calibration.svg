@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="425.61125pt" height="326.075875pt" viewBox="0 0 425.61125 326.075875" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-06-02T13:16:43.268246</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 326.075875 
+L 425.61125 326.075875 
+L 425.61125 0 
+L 0 0 
+L 0 326.075875 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 54.45125 282.267125 
+L 400.41125 282.267125 
+L 400.41125 27.243125 
+L 54.45125 27.243125 
+L 54.45125 282.267125 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 54.45125 282.267125 
+L 54.45125 27.243125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="mfe4b896813" d="M 0 0 
+L 0 3.5 
+" style="stroke: #ffffff; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#mfe4b896813" x="54.45125" y="282.267125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: middle; fill: #ffffff" x="54.45125" y="297.8115" transform="rotate(-0 54.45125 297.8115)">0.00</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 123.64325 282.267125 
+L 123.64325 27.243125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#mfe4b896813" x="123.64325" y="282.267125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: middle; fill: #ffffff" x="123.64325" y="297.8115" transform="rotate(-0 123.64325 297.8115)">0.01</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 192.83525 282.267125 
+L 192.83525 27.243125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#mfe4b896813" x="192.83525" y="282.267125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: middle; fill: #ffffff" x="192.83525" y="297.8115" transform="rotate(-0 192.83525 297.8115)">0.02</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 262.02725 282.267125 
+L 262.02725 27.243125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#mfe4b896813" x="262.02725" y="282.267125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: middle; fill: #ffffff" x="262.02725" y="297.8115" transform="rotate(-0 262.02725 297.8115)">0.03</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 331.21925 282.267125 
+L 331.21925 27.243125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#mfe4b896813" x="331.21925" y="282.267125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: middle; fill: #ffffff" x="331.21925" y="297.8115" transform="rotate(-0 331.21925 297.8115)">0.04</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 400.41125 282.267125 
+L 400.41125 27.243125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#mfe4b896813" x="400.41125" y="282.267125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: middle; fill: #ffffff" x="400.41125" y="297.8115" transform="rotate(-0 400.41125 297.8115)">0.05</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <!-- $\alpha$ -->
+     <g style="fill: #ffffff" transform="translate(223.47125 312.815875)">
+      <text>
+       <tspan x="0" y="-0.265625" style="font-style: oblique; font-size: 12px; font-family: 'DejaVu Sans'; fill: #ffffff">α</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_13">
+      <path d="M 54.45125 282.267125 
+L 400.41125 282.267125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_14">
+      <defs>
+       <path id="m36e41d18a4" d="M 0 0 
+L -3.5 0 
+" style="stroke: #ffffff; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m36e41d18a4" x="54.45125" y="282.267125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: end; fill: #ffffff" x="47.45125" y="286.539313" transform="rotate(-0 47.45125 286.539313)">0.0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_15">
+      <path d="M 54.45125 244.593125 
+L 400.41125 244.593125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#m36e41d18a4" x="54.45125" y="244.593125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: end; fill: #ffffff" x="47.45125" y="248.865313" transform="rotate(-0 47.45125 248.865313)">0.1</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_17">
+      <path d="M 54.45125 206.919125 
+L 400.41125 206.919125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_18">
+      <g>
+       <use xlink:href="#m36e41d18a4" x="54.45125" y="206.919125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: end; fill: #ffffff" x="47.45125" y="211.191313" transform="rotate(-0 47.45125 211.191313)">0.2</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_19">
+      <path d="M 54.45125 169.245125 
+L 400.41125 169.245125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_20">
+      <g>
+       <use xlink:href="#m36e41d18a4" x="54.45125" y="169.245125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: end; fill: #ffffff" x="47.45125" y="173.517313" transform="rotate(-0 47.45125 173.517313)">0.3</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_21">
+      <path d="M 54.45125 131.571125 
+L 400.41125 131.571125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_22">
+      <g>
+       <use xlink:href="#m36e41d18a4" x="54.45125" y="131.571125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: end; fill: #ffffff" x="47.45125" y="135.843313" transform="rotate(-0 47.45125 135.843313)">0.4</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_23">
+      <path d="M 54.45125 93.897125 
+L 400.41125 93.897125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_24">
+      <g>
+       <use xlink:href="#m36e41d18a4" x="54.45125" y="93.897125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: end; fill: #ffffff" x="47.45125" y="98.169313" transform="rotate(-0 47.45125 98.169313)">0.5</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_25">
+      <path d="M 54.45125 56.223125 
+L 400.41125 56.223125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 0.6"/>
+     </g>
+     <g id="line2d_26">
+      <g>
+       <use xlink:href="#m36e41d18a4" x="54.45125" y="56.223125" style="fill: #ffffff; stroke: #ffffff; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: end; fill: #ffffff" x="47.45125" y="60.495312" transform="rotate(-0 47.45125 60.495312)">0.6</text>
+     </g>
+    </g>
+    <g id="text_15">
+     <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: middle; fill: #ffffff" x="19.39125" y="154.755125" transform="rotate(-90 19.39125 154.755125)">Observed proportion</text>
+    </g>
+   </g>
+   <g id="line2d_27">
+    <path d="M 54.45125 282.267125 
+L 400.41125 93.897125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke-dasharray: 5.92,2.56; stroke-dashoffset: 0; stroke: #e60012; stroke-width: 1.6"/>
+   </g>
+   <g id="line2d_28">
+    <path d="M 57.928235 282.267125 
+L 61.40522 278.127125 
+L 64.882205 269.847125 
+L 68.35919 269.847125 
+L 71.836175 261.567125 
+L 75.31316 240.867125 
+L 78.790144 232.587125 
+L 82.267129 228.447125 
+L 85.744114 228.447125 
+L 89.221099 228.447125 
+L 92.698084 224.307125 
+L 96.175069 224.307125 
+L 99.652054 220.167125 
+L 103.129039 216.027125 
+L 106.606024 211.887125 
+L 110.083009 203.607125 
+L 113.559994 195.327125 
+L 117.036979 195.327125 
+L 120.513964 191.187125 
+L 123.990948 187.047125 
+L 127.467933 187.047125 
+L 130.944918 187.047125 
+L 134.421903 182.907125 
+L 137.898888 182.907125 
+L 141.375873 182.907125 
+L 144.852858 182.907125 
+L 148.329843 182.907125 
+L 151.806828 182.907125 
+L 155.283813 182.907125 
+L 158.760798 182.907125 
+L 162.237783 178.767125 
+L 165.714768 178.767125 
+L 169.191753 174.627125 
+L 172.668737 174.627125 
+L 176.145722 166.347125 
+L 179.622707 166.347125 
+L 183.099692 166.347125 
+L 186.576677 166.347125 
+L 190.053662 162.207125 
+L 193.530647 162.207125 
+L 197.007632 162.207125 
+L 200.484617 153.927125 
+L 203.961602 145.647125 
+L 207.438587 141.507125 
+L 210.915572 141.507125 
+L 214.392557 129.087125 
+L 217.869541 120.807125 
+L 221.346526 120.807125 
+L 224.823511 120.807125 
+L 228.300496 120.807125 
+L 231.777481 116.667125 
+L 235.254466 116.667125 
+L 238.731451 116.667125 
+L 242.208436 116.667125 
+L 245.685421 116.667125 
+L 249.162406 112.527125 
+L 252.639391 104.247125 
+L 256.116376 100.107125 
+L 259.593361 100.107125 
+L 263.070345 95.967125 
+L 266.54733 87.687125 
+L 270.024315 87.687125 
+L 273.5013 87.687125 
+L 276.978285 87.687125 
+L 280.45527 87.687125 
+L 283.932255 87.687125 
+L 287.40924 87.687125 
+L 290.886225 79.407125 
+L 294.36321 79.407125 
+L 297.840195 79.407125 
+L 301.31718 79.407125 
+L 304.794165 79.407125 
+L 308.271149 75.267125 
+L 311.748134 75.267125 
+L 315.225119 75.267125 
+L 318.702104 75.267125 
+L 322.179089 75.267125 
+L 325.656074 75.267125 
+L 329.133059 71.127125 
+L 332.610044 71.127125 
+L 336.087029 71.127125 
+L 339.564014 71.127125 
+L 343.040999 71.127125 
+L 346.517984 71.127125 
+L 349.994969 71.127125 
+L 353.471954 71.127125 
+L 356.948938 71.127125 
+L 360.425923 62.847125 
+L 363.902908 62.847125 
+L 367.379893 62.847125 
+L 370.856878 62.847125 
+L 374.333863 62.847125 
+L 377.810848 62.847125 
+L 381.287833 62.847125 
+L 384.764818 62.847125 
+L 388.241803 62.847125 
+L 391.718788 58.707125 
+L 395.195773 54.567125 
+L 398.672758 50.427125 
+" clip-path="url(#p6bce398f54)" style="fill: none; stroke: #ffffff; stroke-width: 2"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 54.45125 282.267125 
+L 54.45125 27.243125 
+" style="fill: none; stroke: #ffffff; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 54.45125 282.267125 
+L 400.41125 282.267125 
+" style="fill: none; stroke: #ffffff; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_16">
+    <!-- RPP CALIBRATION  ($\alpha \leq 0.05$) -->
+    <g style="fill: #ffffff" transform="translate(118.79125 21.243125)">
+     <text>
+      <tspan x="0" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">R</tspan>
+      <tspan x="8.399994" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">P</tspan>
+      <tspan x="16.799988" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">P</tspan>
+      <tspan x="25.199982" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff"> </tspan>
+      <tspan x="33.599976" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">C</tspan>
+      <tspan x="41.999969" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">A</tspan>
+      <tspan x="50.399963" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">L</tspan>
+      <tspan x="58.799957" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">I</tspan>
+      <tspan x="67.199951" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">B</tspan>
+      <tspan x="75.599945" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">R</tspan>
+      <tspan x="83.999939" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">A</tspan>
+      <tspan x="92.399933" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">T</tspan>
+      <tspan x="100.799927" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">I</tspan>
+      <tspan x="109.199921" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">O</tspan>
+      <tspan x="117.599915" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">N</tspan>
+      <tspan x="125.999908" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff"> </tspan>
+      <tspan x="134.399902" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff"> </tspan>
+      <tspan x="142.799896" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">(</tspan>
+      <tspan x="208.785828" y="-0.453125" style="font-weight: 700; font-size: 14px; font-family: 'Source Code Pro'; fill: #ffffff">)</tspan>
+      <tspan x="151.19989" y="-0.453125" style="font-style: oblique; font-size: 14px; font-family: 'DejaVu Sans'; fill: #ffffff">α</tspan>
+      <tspan x="163.155945" y="-0.453125" style="font-size: 14px; font-family: 'DejaVu Sans'; fill: #ffffff">≤</tspan>
+      <tspan x="177.613953" y="-0.453125" style="font-size: 14px; font-family: 'DejaVu Sans'; fill: #ffffff">0</tspan>
+      <tspan x="186.521179" y="-0.453125" style="font-size: 14px; font-family: 'DejaVu Sans'; fill: #ffffff">.</tspan>
+      <tspan x="190.971375" y="-0.453125" style="font-size: 14px; font-family: 'DejaVu Sans'; fill: #ffffff">0</tspan>
+      <tspan x="199.878601" y="-0.453125" style="font-size: 14px; font-family: 'DejaVu Sans'; fill: #ffffff">5</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="line2d_29">
+     <path d="M 65.25125 42.603125 
+L 77.25125 42.603125 
+L 89.25125 42.603125 
+" style="fill: none; stroke-dasharray: 5.92,2.56; stroke-dashoffset: 0; stroke: #e60012; stroke-width: 1.6"/>
+    </g>
+    <g id="text_17">
+     <!-- target  $\alpha / u_p$ -->
+     <g style="fill: #ffffff" transform="translate(98.85125 46.803125)">
+      <text>
+       <tspan x="0" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff">t</tspan>
+       <tspan x="7.199997" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff">a</tspan>
+       <tspan x="14.399994" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff">r</tspan>
+       <tspan x="21.599991" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff">g</tspan>
+       <tspan x="28.799988" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff">e</tspan>
+       <tspan x="35.999985" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff">t</tspan>
+       <tspan x="43.199982" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff"> </tspan>
+       <tspan x="50.399979" y="-0.25" style="font-size: 12px; font-family: 'Source Code Pro'; fill: #ffffff"> </tspan>
+       <tspan x="57.599976" y="-0.25" style="font-style: oblique; font-size: 12px; font-family: 'DejaVu Sans'; fill: #ffffff">α</tspan>
+       <tspan x="69.553101" y="-0.25" style="font-style: oblique; font-size: 12px; font-family: 'DejaVu Sans'; fill: #ffffff">u</tspan>
+       <tspan x="65.510132" y="-0.25" style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #ffffff">/</tspan>
+       <tspan x="77.158569" y="1.71875" style="font-style: oblique; font-size: 8.4px; font-family: 'DejaVu Sans'; fill: #ffffff">p</tspan>
+      </text>
+     </g>
+    </g>
+    <g id="line2d_30">
+     <path d="M 65.25125 60.914375 
+L 77.25125 60.914375 
+L 89.25125 60.914375 
+" style="fill: none; stroke: #ffffff; stroke-width: 2"/>
+    </g>
+    <g id="text_18">
+     <text style="font-size: 12px; font-family: 'Source Code Pro'; text-anchor: start; fill: #ffffff" x="98.85125" y="65.114375" transform="rotate(-0 98.85125 65.114375)">empirical rate</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p6bce398f54">
+   <rect x="54.45125" y="27.243125" width="345.96" height="255.024"/>
+  </clipPath>
+ </defs>
+</svg>
