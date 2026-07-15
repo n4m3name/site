@@ -12,7 +12,7 @@ export default function Links() {
                 href={l.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[var(--accent)] hover:text-white transition-colors"
+                className="text-[var(--accent)] hover:text-white/60 transition-colors"
               >
                 {l.label}
               </a>

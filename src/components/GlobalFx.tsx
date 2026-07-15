@@ -8,6 +8,7 @@ import { setListNavSuspended } from '../hooks/useListNav'
 import AboutBody, { frontmatter as aboutFrontmatter } from '../../content/about-me.mdx'
 
 const ACCENTS = [
+  '#ffffff', // white
   '#E60012', // red
   '#00E510', // green
   '#0066FF', // blue
@@ -227,7 +228,7 @@ export default function GlobalFx() {
                     type="button"
                     onClick={() => triggerShortcut(key)}
                     aria-label={desc}
-                    className="text-[var(--accent)] hover:text-white transition-colors text-left leading-none -m-1 p-1 cursor-pointer"
+                    className="text-[var(--accent)] hover:text-white/60 transition-colors text-left leading-none -m-1 p-1 cursor-pointer"
                   >
                     {key}
                   </button>
@@ -286,7 +287,7 @@ export default function GlobalFx() {
                     href={l.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[var(--accent)] hover:text-white transition-colors"
+                    className="text-[var(--accent)] hover:text-white/60 transition-colors"
                   >
                     {l.label}
                   </a>

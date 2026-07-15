@@ -30,7 +30,7 @@ export default function RefPreview({ label = 'ref.md', children }: Props) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="text-[var(--accent)] hover:text-white transition-colors underline underline-offset-2 cursor-pointer"
+        className="text-[var(--accent)] hover:text-white/60 transition-colors underline underline-offset-2 cursor-pointer"
       >
         {label}
       </button>
