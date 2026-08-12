@@ -1,0 +1,72 @@
+---
+title: Powerlifting Percentiles
+updated: 2026-08-11
+---
+
+<p align="center">
+  <img src="/images/plpct/hero.jpg" alt="Percentile explorer, cohort panel and results" width="600" />
+</p>
+
+Where your lifts sit among competitive powerlifters, and how far that answer moves when you change who you are compared against. Live at [plpercentiles.netlify.app](https://plpercentiles.netlify.app).
+
+Built on the [OpenPowerlifting](https://openpowerlifting.gitlab.io/opl-csv/bulk-csv.html) bulk export — 4.0M meet results, 2.65M valid full-power performances, 774k distinct lifters.
+
+## Why
+
+Two calculators can score the same lifts twenty percentile points apart and both be correct. The population is doing the work, and it is usually invisible: 2025 or all-time, tested or any meet, entries or people, raw or everything.
+
+So the comparison is the interface. Enter your lifts once and they are scored against every cohort simultaneously; the spread between them is the headline, not any single row.
+
+<p align="center">
+  <img src="/images/plpct/sensitivity.jpg" alt="Same lifts scored across cohorts" width="600" />
+</p>
+
+## What profiling the source turned up
+
+Filter design came out of the data rather than assumption. Four things materially change the answer:
+
+- **High-school federations are 28% of valid full-power results**, and their meets permit squat suits — so they land in `Single-ply` and `Unlimited`, not `Raw`. THSPA alone is the largest federation in the dataset. Median squat in `Unlimited` swings 390 → 700 lb once school meets are removed; `Single-ply` swings 420 → 474 lb. Any equipment dropdown that ignores this is describing teenagers.
+- **211,198 rows are one lifter entered twice.** 96% of duplicate groups differ only by `Division` — the same person in Open *and* their age class. Counting entries weights frequent competitors, who are stronger, several times over.
+- **`Tested` only ever takes the value `Yes`**, with blanks for everything else, and it is set per meet. Federations are internally mixed: ~37% of USPA meets, ~41% of WRPF, ~0.4% of USPF.
+- **`AgeClass` covers 73% against `Age` at 63%**, and missingness tracks federation record-keeping rather than age. Lifters with no recorded age are ~44 lb weaker at the median squat, so filtering on age quietly filters on paperwork. Opt-in, never default.
+
+Also: the sport is getting stronger fast, and half of it is composition. Median raw squat runs 413 lb all-time, 424 lb for 2020+, 441 lb in 2025. First-time competitors alone went 380 → 397 lb between 2015 and 2025, while their share of entries fell from 47% to 31%.
+
+## Data pipeline
+
+`build_site_data.py` emits one columnar binary per era at **12 bytes per lifter**:
+
+```
+flags:u16   sex | equipment | tested | school | ageClass
+geo:u8      country
+fed:u8      sanctioning body
+bw:u16      hectograms
+sq,bp,dl:u16
+```
+
+2020+ is 388k lifters, 4.7 MB raw and 2.1 MB gzipped. Era is a file rather than a filter because it changes the de-duplication basis — "one row per lifter" only means something relative to a window, and restricting years *after* de-duplicating would keep only those whose best-ever total happened to fall inside it.
+
+## Percentiles
+
+The browser decodes columns into typed arrays and computes everything itself, so no filter combination is precomputed and every one responds instantly.
+
+Values are hectograms in a `Uint16Array`, so the range is small enough that a counting histogram at full 0.1 kg resolution costs ~24 KB — and doubles as a counting sort. Percentiles and quantiles are therefore **exact order statistics**, not interpolation off a fitted normal.
+
+Ties matter here. 8,716 raw men bench exactly 115 kg, so the percentile at that weight genuinely spans 38.5 to 42.1. The reported value is the midpoint of the step.
+
+The same clustering bit the charts: with arbitrary bin widths the histograms alias against round loadings and render as a comb of alternating tall and short bars. Bin edges snap to multiples of the 2.5 kg plate step.
+
+## Filters
+
+Global, faceted, each showing how many lifters it leaves — sex, equipment, drug-tested, age class, bodyweight range, federation group, country, school meets. Nothing typed leaves the browser.
+
+## Stack
+
+- Vite 6, React 19, TypeScript, Tailwind v4
+- No chart library — SVG, drawn from the counting histograms
+- Python + pandas for the offline pipeline
+
+## Deploy
+
+- Netlify, auto-build on push to `main`
+- Binaries served from `public/data` with long-lived immutable caching
